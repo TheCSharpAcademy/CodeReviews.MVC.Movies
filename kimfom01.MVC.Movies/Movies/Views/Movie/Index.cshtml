@@ -1,0 +1,37 @@
+﻿@model IEnumerable<Movies.Models.Movie>
+@{
+    ViewData["Title"] = "Movies";
+}
+
+<form asp-controller="Movie" asp-action="Index" method="get">
+    <p>
+        Title: <input type="text" name="SearchString"/>
+        <input type="submit" value="Filter"/>
+    </p>
+</form>
+
+<div class="m-3">
+    @if (!Model.Any())
+    {
+        <p class="text-center">There are currently no features available</p>
+    }
+    else
+    {
+        <div class="row g-0">
+            @foreach(var movie in Model)
+            {
+                <div class="card col-2 m-2">
+                    <a asp-action="Details" asp-route-id="@movie.MovieId" class="link-dark text-decoration-none">
+                        <div class="card-body">
+                            <img src="@movie.ImageUrl" alt="@movie.Title" width="100%" />
+                            <p class="card-title text-truncate">@movie.Title</p>
+                            <p>Rating: @movie.Rating</p>
+                            <p>Genres: @movie.Genre</p>
+                            <p>Release Year: @movie.Year</p>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    }
+</div>
