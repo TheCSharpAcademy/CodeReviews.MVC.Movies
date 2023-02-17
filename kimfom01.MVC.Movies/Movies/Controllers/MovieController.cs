@@ -7,14 +7,14 @@ namespace Movies.Controllers;
 public class MovieController : Controller
 {
     private readonly IMovieRepository _movieRepository;
-    private readonly IMovieAPIService _movieAPIService;
+    private readonly IMovieAPIService _movieApiService;
 
     public MovieController(
         IMovieRepository movieRepository,
-        IMovieAPIService movieAPIService)
+        IMovieAPIService movieApiService)
     {
         _movieRepository = movieRepository;
-        _movieAPIService = movieAPIService;
+        _movieApiService = movieApiService;
     }
 
     public IActionResult Index(string searchString)
@@ -25,7 +25,9 @@ public class MovieController : Controller
 
         if (!string.IsNullOrWhiteSpace(searchString))
         {
-            movies = movies.Where(mo => mo.Title.Contains(searchString));
+            movies = movies.Where(
+                mo => mo.Title.Contains(searchString)
+                || mo.Genre.Contains(searchString));
         }
 
         return View(movies);
@@ -38,7 +40,7 @@ public class MovieController : Controller
             return NotFound();
         }
 
-        var movieDetailsDto = await _movieAPIService.FetchDetails(id);
+        var movieDetailsDto = await _movieApiService.FetchDetails(id);
 
         return View(movieDetailsDto);
     }
