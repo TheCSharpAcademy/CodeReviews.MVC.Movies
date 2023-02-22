@@ -42,6 +42,6 @@ public class AdminController : Controller
             await _movieRepository.SaveChanges();
         }
 
-        return View("Index");
+        return RedirectToAction("Index", controllerName: "Movie");
     }
 }
