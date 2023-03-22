@@ -1,24 +1,24 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Movies.DataAccessLibrary.Repositories;
-using Movies.DataAccessLibrary.Models;
-using Movies.ApiService.MovieApi;
 using Movies.ApiService.Models;
+using Movies.ApiService.MovieApi;
+using Movies.DataAccessLibrary.Models;
+using Movies.DataAccessLibrary.Repositories;
 
-namespace Movies.Controllers;
+namespace Movies.Mvc.Controllers;
 
 public class AdminController : Controller
 {
-    private readonly IMovieApiService _movieAPIService;
+    private readonly IMovieApiService _movieApiService;
     private readonly IMovieRepository _movieRepository;
     private readonly IMapper _mapper;
 
     public AdminController(
-        IMovieApiService movieAPIService, 
+        IMovieApiService movieApiService, 
         IMovieRepository movieRepository, 
         IMapper mapper)
     {
-        _movieAPIService = movieAPIService;
+        _movieApiService = movieApiService;
         _movieRepository = movieRepository;
         _mapper = mapper;
     }
@@ -33,7 +33,7 @@ public class AdminController : Controller
     {
         if (ModelState.IsValid)
         {
-            var moviesApiDto = await _movieAPIService.FetchMovies(filter);
+            var moviesApiDto = await _movieApiService.FetchMovies(filter);
 
             var movies = _mapper.Map<IEnumerable<MovieDbDto>>(moviesApiDto);
 

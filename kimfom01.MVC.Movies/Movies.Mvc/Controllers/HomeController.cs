@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Movies.Mvc.Models;
 
-namespace Movies.Controllers;
+namespace Movies.Mvc.Controllers;
 
 public class HomeController : Controller
 {

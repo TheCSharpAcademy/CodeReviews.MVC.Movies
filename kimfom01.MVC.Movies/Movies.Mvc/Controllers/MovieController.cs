@@ -1,24 +1,20 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Movies.DataAccessLibrary.Repositories;
-using Movies.ApiService.MovieApi;
-using AutoMapper;
 using Movies.Mvc.Models;
 
-namespace Movies.Controllers;
+namespace Movies.Mvc.Controllers;
 
 public class MovieController : Controller
 {
     private readonly IMovieRepository _movieRepository;
-    private readonly IMovieApiService _movieApiService;
     private readonly IMapper _mapper;
 
     public MovieController(
         IMovieRepository movieRepository,
-        IMovieApiService movieApiService,
         IMapper mapper)
     {
         _movieRepository = movieRepository;
-        _movieApiService = movieApiService;
         _mapper = mapper;
     }
 
