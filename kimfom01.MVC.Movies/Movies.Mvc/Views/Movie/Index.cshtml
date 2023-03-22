@@ -4,21 +4,21 @@
 }
 
 <form asp-controller="Movie" asp-action="Index" method="get">
-    <p>
-        Title: <input type="text" name="SearchString"/>
-        <input type="submit" value="Filter"/>
+    <p class="text-white">
+        Title: <input type="text" name="SearchString" />
+        <input type="submit" class="btn btn-primary" value="Filter" />
     </p>
 </form>
 
 <div class="m-3">
     @if (!Model.Any())
     {
-        <p class="text-center">There are currently no features available</p>
+        <p class="text-center text-white">There are currently no features available</p>
     }
     else
     {
         <div class="row g-0">
-            @foreach(var movie in Model)
+            @foreach (var movie in Model)
             {
                 <div class="card col-2 m-2">
                     <a asp-action="Details" asp-route-id="@movie.Id" class="link-dark text-decoration-none">

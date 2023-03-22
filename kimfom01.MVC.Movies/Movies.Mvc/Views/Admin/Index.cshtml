@@ -6,12 +6,14 @@
 }
 
 
-<div class="col-md-4">
-    <form method="post" asp-action="FetchMovies" asp-controller="Admin">
-        <div class="form-group">
-            <label asp-for="Rating" class="form-label">Choose Minimum Rating To Filter</label>
-            <select asp-for="Rating" asp-items="Html.GetEnumSelectList<RatingsEnum>()" class="form-select"></select>
-        </div>
-        <input type="submit" class="btn btn-primary" value="Fetch Movies" />
-    </form>
+<div class="d-flex justify-content-center">
+    <div class="col-md-4">
+        <form method="post" asp-action="FetchMovies" asp-controller="Admin">
+            <div class="form-group">
+                <label asp-for="Rating" class="form-label text-white">Choose Minimum Rating To Filter</label>
+                <select asp-for="Rating" asp-items="Html.GetEnumSelectList<RatingsEnum>()" class="form-select"></select>
+            </div>
+            <input type="submit" class="btn btn-primary" value="Fetch Movies" />
+        </form>
+    </div>
 </div>
