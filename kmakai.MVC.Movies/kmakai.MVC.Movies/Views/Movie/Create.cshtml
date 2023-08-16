@@ -1,0 +1,48 @@
+﻿@model kmakai.MVC.Movies.Models.Movie
+
+@{
+    ViewBag.Title = "Add Movie";
+}
+
+<h1 class="">Add a movie</h1>
+
+<div class="row">
+    <hr />
+    <form method="post">
+        <div class="mb-3 row">
+            <label class="control-label col-md-2" for="Title">Title</label>
+            <div class="col-md-10">
+                <input class="form-control text-box single-line" id="Title" name="Title" type="text" value="" />
+            </div>
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3 row">
+            <label class="control-label col-md-2" for="ReleaseDate">Release Date</label>
+            <div class="col-md-10">
+                <input class="form-control text-box single-line" id="ReleaseDate" name="ReleaseDate" type="date" value="" />
+            </div>
+            <span asp-validation-for="ReleaseDate" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3 row">
+            <label class="control-label col-md-2" for="Genre">Genre</label>
+            <div class="col-md-10">
+                <input class="form-control text-box single-line" id="Genre" name="Genre" type="text" value="" />
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label class="control-label col-md-2" for="Price">Price</label>
+            <div class="col-md-10">
+                <input class="form-control text-box single-line" id="Price" name="Price" type="text" value="" />
+            </div>
+            <span asp-validation-for="Price" class="text-danger"></span>
+        </div>
+
+        <div class="mt-4">
+            <button type="submit" class="btn btn-success">Submit</button>
+            <a asp-controller="Movie" asp-action="Index" class="btn btn-outline-success">back to list</a>
+        </div>
+    </form>
+</div>
