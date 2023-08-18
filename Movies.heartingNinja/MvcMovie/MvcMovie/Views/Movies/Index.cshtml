@@ -1,0 +1,83 @@
+﻿@model MvcMovie.Models.MovieGenreViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1 style="font-size: 24px;">Movies</h1>
+
+<p>
+    <a asp-action="Create" style="font-size: 18px;" class="link">Create New</a>
+</p>
+<form asp-controller="Movies" asp-action="Index" method="get">
+    <p>
+        <select asp-for="MovieGenre" asp-items="Model.Genres" style="font-size: 18px;">
+            <option value="">All</option>
+        </select>
+
+        Title: <input type="text" asp-for="SearchString" style="font-size: 18px;" />
+        <input type="submit" value="Filter" style="font-size: 18px;" />
+    </p>
+</form>
+
+<div class="table-container">
+    <table class="table" style="border-collapse: collapse; width: 100%;">
+        <thead>
+            <tr>
+                <th style="border: 1px solid black; font-size: 20px; font-weight: bold;">
+                    @Html.DisplayNameFor(model => model.Movies![0].Title)
+                </th>
+                <th style="border: 1px solid black; font-size: 20px; font-weight: bold;">
+                    @Html.DisplayNameFor(model => model.Movies![0].ReleaseDate)
+                </th>
+                <th style="border: 1px solid black; font-size: 20px; font-weight: bold;">
+                    @Html.DisplayNameFor(model => model.Movies![0].Genre)
+                </th>
+                <th style="border: 1px solid black; font-size: 20px; font-weight: bold;">
+                    @Html.DisplayNameFor(model => model.Movies![0].Price)
+                </th>
+                <th style="border: 1px solid black; font-size: 20px; font-weight: bold;"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Movies!)
+            {
+                <tr>
+                    <td style="border: 1px solid black; font-size: 18px; font-weight: bold;">
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td style="border: 1px solid black; font-size: 18px; font-weight: bold;">
+                        @Html.DisplayFor(modelItem => item.ReleaseDate)
+                    </td>
+                    <td style="border: 1px solid black; font-size: 18px; font-weight: bold;">
+                        @Html.DisplayFor(modelItem => item.Genre)
+                    </td>
+                    <td style="border: 1px solid black; font-size: 18px; font-weight: bold;">
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td style="border: 1px solid black; font-size: 18px;">
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="link" style="font-weight: bold;">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id" class="link" style="font-weight: bold;">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="link" style="font-weight: bold;">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<style>
+    .link {
+        color: black;
+        font-size: 18px;
+    }
+
+        .link:hover {
+            color: red;
+        }
+
+    .table-container {
+        max-height: 1000px;
+        overflow-y: scroll;
+    }
+</style>

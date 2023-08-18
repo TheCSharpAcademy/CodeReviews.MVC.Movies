@@ -1,0 +1,66 @@
+﻿@model kmakai.MVC.Movies.Models.Book
+@{
+    ViewBag.Title = "Edit Book";
+}
+
+<h2>Edit book</h2>
+
+
+<div class="row">
+    <hr />
+    <form asp-action="Edit">
+        <input type="hidden" asp-for="Id" />
+        <div class="mb-3 row">
+            <label class="control-label col-md-2" asp-for="Title">Title</label>
+            <div class="col-md-10">
+                <input class="form-control text-box single-line" id="Title" name="Title" type="text"  asp-for="Title"/>
+            </div>
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3 row">
+            <label class="control-label col-md-2" for="Author">Author</label>
+            <div class="col-md-10">
+                <input class="form-control text-box single-line" id="Author" name="Author" type="text" asp-for="Author" />
+            </div>
+            <span asp-validation-for="Author" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3 row">
+            <label class="control-label col-md-2" for="Publisher">Published</label>
+            <div class="col-md-10">
+                <input class="form-control text-box single-line" id="Published" name="Published" type="date" asp-for="Published" />
+            </div>
+            <span asp-validation-for="Published" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3 row">
+            <label class="control-label col-md-2" for="Genre">Genre</label>
+            <div class="col-md-10">
+                <input class="form-control text-box single-line" id="Genre" name="Genre" type="text" asp-for="Genre" />
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label class="control-label col-md-2" for="Price">Price</label>
+            <div class="col-md-10">
+                <input class="form-control text-box single-line" id="Price" name="Price" type="text"  asp-for="Price"/>
+            </div>
+            <span asp-validation-for="Price" class="text-danger"></span>
+        </div>
+
+
+        <div class="mt-4">
+            <button type="submit" class="btn btn-success">Submit</button>
+            <a asp-controller="Book" asp-action="Index" class="btn btn-outline-success">back to list</a>
+        </div>
+
+
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
