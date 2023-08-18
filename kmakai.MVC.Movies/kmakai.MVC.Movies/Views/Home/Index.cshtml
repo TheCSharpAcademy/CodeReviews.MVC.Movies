@@ -1,0 +1,126 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@{
+    IEnumerable<Movie> movies = ViewData["Movies"] as IEnumerable<Movie>;
+    IEnumerable<Book> books = ViewData["Books"] as IEnumerable<Book>;
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h2>Movie and Book Library</h2>
+        <p>
+            Welcome to the Movie and Book Library. Here you can manage all the movies and books that you have in your library.
+        </p>
+    </div>
+</div>
+
+<form asp-controller="Home" asp-action="Index" method="get">
+    <p>
+        Search: <input type="text" name="searchString" />
+        <input type="submit" value="Search" />
+    </p>
+</form>
+
+<div class="row">
+    <h4>Movies</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Title
+                </th>
+                <th>
+                    Release Date
+                </th>
+                <th>
+                    Genre
+                </th>
+                <th>
+                    Price
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in movies)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReleaseDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Genre)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        <a asp-controller="Movie" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-controller="Movie" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-controller="Movie" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<a asp-controller="Movie" asp-action="Create" class="btn btn-success">Add new movie</a>
+
+<div class="row mt-5">
+    <h4>Books</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Title
+                </th>
+                <th>
+                    Author
+                </th>
+                <th>
+                    Published
+                </th>
+                <th>
+                    Genre
+                </th>
+                <th>
+                    Price
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in books)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Author)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Published)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Genre)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        <a asp-controller="Book" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-controller="Book" asp-route-id="@item.Id">Details</a> |
+                        <a asp-controller="Book" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<a asp-controller="Book" asp-action="Create" class="btn btn-success">Add new book</a>
