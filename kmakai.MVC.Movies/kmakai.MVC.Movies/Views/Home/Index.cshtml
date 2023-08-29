@@ -3,8 +3,8 @@
 }
 
 @{
-    IEnumerable<Movie> movies = ViewData["Movies"] as IEnumerable<Movie>;
-    IEnumerable<Book> books = ViewData["Books"] as IEnumerable<Book>;
+    IEnumerable<Movie>? movies = ViewData["Movies"]! as IEnumerable<Movie>;
+    IEnumerable<Book>? books = ViewData["Books"] as IEnumerable<Book>;
 }
 
 <div class="row">
@@ -44,7 +44,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in movies)
+            @foreach (var item in movies!)
             {
                 <tr>
                     <td>
@@ -95,7 +95,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in books)
+            @foreach (var item in books!)
             {
                 <tr>
                     <td>

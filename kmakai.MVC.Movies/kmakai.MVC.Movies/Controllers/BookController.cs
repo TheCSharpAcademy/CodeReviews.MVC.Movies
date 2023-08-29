@@ -1,9 +1,11 @@
 ﻿using kmakai.MVC.Movies.DataAccess;
 using kmakai.MVC.Movies.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace kmakai.MVC.Movies.Controllers;
 
+[Authorize]
 public class BookController : Controller
 {
 
@@ -14,7 +16,8 @@ public class BookController : Controller
     {
         _context = context;
     }
-    
+
+    [AllowAnonymous]
     public IActionResult Index(string searchString)
     {
         var books = from b in _context.Books
@@ -46,6 +49,7 @@ public class BookController : Controller
         return View(book);
     }
 
+    [AllowAnonymous]
     public async Task<IActionResult> Details(int id)
     {
         var book = await _context.Books.FindAsync(id);
