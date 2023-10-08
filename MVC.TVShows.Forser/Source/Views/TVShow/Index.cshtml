@@ -1,0 +1,65 @@
+﻿@model IList<MVC.TVShows.Forser.Models.TVShow>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model[0].Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].ShowStarted)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].ShowCompleted)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].NumberOfEpisodes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].NumberOfSeasons)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].BeenWatched)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@for (var i = 0; i < Model.Count; i++) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => modelItem[i].Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => modelItem[i].ShowStarted)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => modelItem[i].ShowCompleted)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => modelItem[i].NumberOfEpisodes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => modelItem[i].NumberOfSeasons)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => modelItem[i].BeenWatched)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@Model[i].Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@Model[i].Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@Model[i].Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
