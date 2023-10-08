@@ -8,12 +8,10 @@ namespace MVC.TVShows.Forser.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-
         public string Country { get; set; } = string.Empty;
         public string Certification { get; set; } = string.Empty;
         public string? Description { get; set; }
 
-        public int? TVShowId { get; set; }
-        public TVShow? TVShow { get; set; }
+        public IEnumerable<TVShow_Rating>? TVShow_Rating {  get; set; }
     }
 }

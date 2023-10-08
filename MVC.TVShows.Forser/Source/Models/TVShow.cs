@@ -14,8 +14,8 @@ namespace MVC.TVShows.Forser.Models
         public DateTime ShowCompleted { get; set; }
         public int NumberOfEpisodes { get; set; }
         public int NumberOfSeasons { get; set; }
-        public List<Rating> Ratings { get; set; } = new List<Rating>();
-        public List<Genre> Genres { get; set; } = new List<Genre>();
+        public IEnumerable<TVShow_Rating>? Ratings { get; set; }
+        public IEnumerable<TVShow_Genre>? Genres { get; set; }
         public bool BeenWatched { get; set; } = false;
     }
 }

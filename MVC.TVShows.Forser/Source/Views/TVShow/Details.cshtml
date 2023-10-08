@@ -47,6 +47,10 @@
             @Html.DisplayFor(model => model.BeenWatched)
         </dd>
     </dl>
+    @if (Model.Genres.Count() < 1)
+    {
+        <p>NO GENRES</p>
+    }
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
