@@ -22,7 +22,7 @@ namespace MVC.TVShows.Forser.Repositories
             _entities.Remove(existing);
         }
 
-        public IEnumerable<T> GetAll() => _entities.ToList();
+        public async Task<IEnumerable<T>> GetAll() => await _entities.ToListAsync();
 
         public async Task<T> GetById(int id) => await _entities.FindAsync(id);
 

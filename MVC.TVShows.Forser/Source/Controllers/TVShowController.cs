@@ -6,55 +6,55 @@ namespace MVC.TVShows.Forser.Controllers
 {
     public class TVShowController : Controller
     {
-        private readonly IGenericRepository<TVShow> _tvshowRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public TVShowController(IGenericRepository<TVShow> TVShowRepository)
+        public TVShowController(IUnitOfWork unitOfWork)
         {
-            _tvshowRepository = TVShowRepository;
+            _unitOfWork = unitOfWork;
         }
         // GET: TVShow
-        public ActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            IEnumerable<TVShow> shows = _tvshowRepository.GetAll();
+            IEnumerable<TVShow> shows = await _unitOfWork.TVShows.GetAll();
             return View(shows);
 
         }
-        // GET: TVShow/Details/5
-        public async Task<IActionResult> Details(int id)
-        {
-            if (id == null || (await _tvshowRepository.GetById(id)) == null)
-            {
-                return NotFound();
-            }
+        //// GET: TVShow/Details/5
+        //public async Task<IActionResult> Details(int id)
+        //{
+        //    if (id == null || (await _tvshowRepository.GetById(id)) == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            TVShow tvShow = await _tvshowRepository.GetById(id);
-            if (tvShow == null)
-            {
-                return NotFound();
-            }
+        //    TVShow tvShow = await _tvshowRepository.GetById(id);
+        //    if (tvShow == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return View(tvShow);
-        }
-        // GET: TVShow/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-        // POST: TVShow/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,ShowStarted,ShowCompleted,NumberOfEpisodes,NumberOfSeasons,BeenWatched")] TVShow tvShow)
-        {
-            if (ModelState.IsValid)
-            {
-                await _tvshowRepository.Create(tvShow);
-                await _tvshowRepository.Save();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(tvShow);
-        }
+        //    return View(tvShow);
+        //}
+        //// GET: TVShow/Create
+        //public IActionResult Create()
+        //{
+        //    return View();
+        //}
+        //// POST: TVShow/Create
+        //// To protect from overposting attacks, enable the specific properties you want to bind to.
+        //// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create([Bind("Id,Title,ShowStarted,ShowCompleted,NumberOfEpisodes,NumberOfSeasons,BeenWatched")] TVShow tvShow)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        await _tvshowRepository.Create(tvShow);
+        //        await _tvshowRepository.Save();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    return View(tvShow);
+        //}
         //// GET: TVShow/Edit/5
         //public async Task<IActionResult> Edit(int? id)
         //{

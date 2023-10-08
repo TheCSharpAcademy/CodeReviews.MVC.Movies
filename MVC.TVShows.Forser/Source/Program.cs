@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using MVC.TVShows.Forser.Data;
-using MVC.TVShows.Forser.Models;
 using MVC.TVShows.Forser.Repositories;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -12,8 +11,11 @@ builder.Services.AddDbContext<TVShowContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionString"));
 })
 .AddScoped<TVShowContext>()
-.AddTransient<IGenericRepository<TVShow>, GenericRepository<TVShow>>()
-.AddTransient<IGenericRepository<Genre>, GenericRepository<Genre>>();
+.AddTransient<ITVShowRepository, TVShowRepository>()
+.AddTransient<IShowGenreRepository, ShowGenreRepository>()
+.AddTransient<IUnitOfWork, UnitOfWork>();
+//.AddTransient<IGenericRepository<TVShow>, GenericRepository<TVShow>>()
+//.AddTransient<IGenericRepository<Genre>, GenericRepository<Genre>>();
 
 WebApplication app = builder.Build();
 

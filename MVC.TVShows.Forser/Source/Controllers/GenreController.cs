@@ -6,58 +6,58 @@ namespace MVC.TVShows.Forser.Controllers
 {
     public class GenreController : Controller
     {
-        private readonly IGenericRepository<Genre> _genreRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public GenreController(IGenericRepository<Genre> GenreRepository)
+        public GenreController(IUnitOfWork unitOfWork)
         {
-            _genreRepository = GenreRepository;
+            _unitOfWork = unitOfWork;           
         }
 
         // GET: Genre
-        public ActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            IEnumerable<Genre> genres = _genreRepository.GetAll();
+            IEnumerable<Genre> genres = await _unitOfWork.Genres.GetAll();
             return View(genres);
         }
 
-        // GET: Genre/Details/5
-        public async Task<IActionResult> Details(int id)
-        {
-            if (id == null || (await _genreRepository.GetById(id)) == null)
-            {
-                return NotFound();
-            }
+        //// GET: Genre/Details/5
+        //public async Task<IActionResult> Details(int id)
+        //{
+        //    if (id == null || (await _genreRepository.GetById(id)) == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var genre = await _genreRepository.GetById(id);
-            if (genre == null)
-            {
-                return NotFound();
-            }
+        //    var genre = await _genreRepository.GetById(id);
+        //    if (genre == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return View(genre);
-        }
+        //    return View(genre);
+        //}
 
-        // GET: Genre/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
+        //// GET: Genre/Create
+        //public IActionResult Create()
+        //{
+        //    return View();
+        //}
 
-        // POST: Genre/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ShowGenre")] Genre genre)
-        {
-            if (ModelState.IsValid)
-            {
-                await _genreRepository.Create(genre);
-                await _genreRepository.Save();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(genre);
-        }
+        //// POST: Genre/Create
+        //// To protect from overposting attacks, enable the specific properties you want to bind to.
+        //// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create([Bind("Id,ShowGenre")] Genre genre)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        await _genreRepository.Create(genre);
+        //        await _genreRepository.Save();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    return View(genre);
+        //}
 
         //// GET: Genre/Edit/5
         //public async Task<IActionResult> Edit(int? id)
