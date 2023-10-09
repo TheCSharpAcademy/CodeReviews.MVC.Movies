@@ -1,7 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-using MVC.TVShows.Forser.Data;
-using MVC.TVShows.Forser.Repositories;
-
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -13,6 +9,7 @@ builder.Services.AddDbContext<TVShowContext>(options =>
 .AddScoped<TVShowContext>()
 .AddTransient<ITVShowRepository, TVShowRepository>()
 .AddTransient<IShowGenreRepository, ShowGenreRepository>()
+.AddTransient<IRatingRepository, RatingRepository>()
 .AddTransient<IUnitOfWork, UnitOfWork>();
 
 WebApplication app = builder.Build();

@@ -4,6 +4,7 @@
     {
         ITVShowRepository TVShows { get; }
         IShowGenreRepository Genres { get; }
+        IRatingRepository Ratings { get; }
         int Complete();
     }
 }

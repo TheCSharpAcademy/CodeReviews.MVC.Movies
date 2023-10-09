@@ -1,7 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using MVC.TVShows.Forser.Data;
-
-namespace MVC.TVShows.Forser.Repositories
+﻿namespace MVC.TVShows.Forser.Repositories
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
@@ -16,9 +13,9 @@ namespace MVC.TVShows.Forser.Repositories
 
         public async Task Create(T entity) => await _context.AddAsync(entity);
 
-        public async Task Delete(int id)
+        public async Task Delete(T entity)
         {
-            T existing = await _entities.FindAsync(id);
+            T existing = await _entities.FindAsync(entity);
             _entities.Remove(existing);
         }
 

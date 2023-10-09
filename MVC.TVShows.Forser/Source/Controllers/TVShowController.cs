@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using MVC.TVShows.Forser.Models;
-using MVC.TVShows.Forser.Repositories;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace MVC.TVShows.Forser.Controllers
 {
@@ -13,12 +10,11 @@ namespace MVC.TVShows.Forser.Controllers
         {
             _unitOfWork = unitOfWork;
         }
-        // GET: TVShow
         public async Task<IActionResult> Index()
         {
             IEnumerable<TVShow> shows = await _unitOfWork.TVShows.GetAll();
-            return View(shows);
 
+            return View(shows);
         }
         public async Task<IActionResult> Details(int id)
         {
@@ -35,13 +31,17 @@ namespace MVC.TVShows.Forser.Controllers
 
             return View(tvShow);
         }
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            CreateShowModel viewModel = new CreateShowModel();
+            viewModel.allGenres = (await _unitOfWork.Genres.GetAll()).ToList()
+                .Select(m => new SelectListItem { Text = m.ShowGenre, Value = m.Id.ToString()}).ToList();
+
+            return View(viewModel);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,ShowStarted,ShowCompleted,NumberOfEpisodes,NumberOfSeasons,BeenWatched")] TVShow tvShow)
+        public async Task<IActionResult> Create([Bind("Id,Title,ShowStarted,ShowCompleted,NumberOfEpisodes,NumberOfSeasons,BeenWatched,Genres")] TVShow tvShow, List<SelectListItem> allGenres)
         {
             if (ModelState.IsValid)
             {
@@ -124,10 +124,10 @@ namespace MVC.TVShows.Forser.Controllers
             {
                 return Problem("Entity set 'TVShows'  is null.");
             }
-            var tvShow = await _unitOfWork.TVShows.GetById(id);
+            TVShow tvShow = await _unitOfWork.TVShows.GetById(id);
             if (tvShow != null)
             {
-                _unitOfWork.TVShows.Delete(id);
+                await _unitOfWork.TVShows.Delete(tvShow);
             }
 
             await _unitOfWork.TVShows.Save();

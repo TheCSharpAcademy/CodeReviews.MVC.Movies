@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using MVC.TVShows.Forser.Models;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 
 namespace MVC.TVShows.Forser.Controllers
 {

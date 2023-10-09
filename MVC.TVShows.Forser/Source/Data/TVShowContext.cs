@@ -1,7 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using MVC.TVShows.Forser.Models;
-
-namespace MVC.TVShows.Forser.Data
+﻿namespace MVC.TVShows.Forser.Data
 {
     public class TVShowContext : DbContext
     {

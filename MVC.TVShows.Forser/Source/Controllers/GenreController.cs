@@ -1,9 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using MVC.TVShows.Forser.Models;
-using MVC.TVShows.Forser.Repositories;
-
-namespace MVC.TVShows.Forser.Controllers
+﻿namespace MVC.TVShows.Forser.Controllers
 {
     public class GenreController : Controller
     {
@@ -126,10 +121,10 @@ namespace MVC.TVShows.Forser.Controllers
             {
                 return Problem("Entity set 'Genres'  is null.");
             }
-            var genre = await _unitOfWork.Genres.GetById(id);
+            Genre genre = await _unitOfWork.Genres.GetById(id);
             if (genre != null)
             {
-                await _unitOfWork.Genres.Delete(genre.Id);
+                await _unitOfWork.Genres.Delete(genre);
             }
 
             await _unitOfWork.Genres.Save();
