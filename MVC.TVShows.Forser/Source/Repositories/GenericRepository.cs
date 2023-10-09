@@ -30,5 +30,16 @@
             _entities.Attach(entity);
             _context.Entry(entity).State = EntityState.Modified;
         }
+
+        public TVShow GetAllById(int id)
+        {
+            return _context.TVShows
+                .Include(i => i.Genres)
+                .ThenInclude(i => i.Genre)
+                .AsNoTracking()
+                .OrderBy(i => i.Id)
+                .Where(w => w.Id == id)
+                .FirstOrDefault();
+        }
     }
 }

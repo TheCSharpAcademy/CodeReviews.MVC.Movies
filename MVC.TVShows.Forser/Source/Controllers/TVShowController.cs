@@ -18,12 +18,12 @@ namespace MVC.TVShows.Forser.Controllers
         }
         public async Task<IActionResult> Details(int id)
         {
-            if (id == null || (await _unitOfWork.TVShows.GetById(id)) == null)
+            if (id == null || _unitOfWork.TVShows.GetAllById(id) == null)
             {
                 return NotFound();
             }
 
-            TVShow tvShow = await _unitOfWork.TVShows.GetById(id);
+            TVShow tvShow = _unitOfWork.TVShows.GetAllById(id);
             if (tvShow == null)
             {
                 return NotFound();

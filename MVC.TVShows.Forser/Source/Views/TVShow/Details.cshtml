@@ -46,11 +46,19 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.BeenWatched)
         </dd>
+        <dt class="col-sm-2">
+            Genres
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.Genres != null)
+            {
+                @foreach (var genre in Model.Genres)
+                {
+                    <p>@genre.Genre.ShowGenre</p>
+                }
+            }
+        </dd>
     </dl>
-    @if (Model.Genres != null)
-    {
-        <p>NO GENRES</p>
-    }
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
