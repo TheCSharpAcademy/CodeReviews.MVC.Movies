@@ -45,12 +45,45 @@ namespace MVC.TVShows.Forser.Controllers
         {
             if (ModelState.IsValid)
             {
+                List<Genre> listOfGenre = generateGenreList(allGenres);
+                List<TVShow_Genre> tvShow_Genres = new List<TVShow_Genre>();
+
+                foreach(Genre genre in listOfGenre)
+                {
+                    tvShow_Genres.Add(
+                        new TVShow_Genre 
+                        { 
+                            Genre_Id = genre.Id,
+                            TVShow_Id = tvShow.Id
+                        }
+                    );
+                }
+                tvShow.Genres = tvShow_Genres;
+
                 await _unitOfWork.TVShows.Create(tvShow);
                 await _unitOfWork.TVShows.Save();
                 return RedirectToAction(nameof(Index));
             }
             return View(tvShow);
         }
+
+        private List<Genre> generateGenreList(List<SelectListItem> selectedGenres)
+        {
+            List<Genre> generatedGenreList = new List<Genre>();
+
+            var temp = selectedGenres.Where(s => s.Selected == true);
+
+            foreach (var genre in temp)
+            {
+                    generatedGenreList.Add(
+                        new Genre { 
+                            Id = Convert.ToInt32(genre.Value), ShowGenre = genre.Text, Checked = genre.Selected 
+                        });
+            }
+
+            return generatedGenreList;
+        }
+
         public async Task<IActionResult> Edit(int id)
         {
             if (id == null || (await _unitOfWork.TVShows.GetById(id)) == null)
