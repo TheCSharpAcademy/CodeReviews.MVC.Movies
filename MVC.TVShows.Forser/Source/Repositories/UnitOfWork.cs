@@ -6,9 +6,9 @@ namespace MVC.TVShows.Forser.Repositories
     {
         private readonly TVShowContext _context;
         public ITVShowRepository TVShows { get; }
-        public IGenreRepository Genres { get; }
+        public IShowGenreRepository Genres { get; }
 
-        public UnitOfWork(TVShowContext tvShowContext, ITVShowRepository tvShowRepository, IGenreRepository genreRepository)
+        public UnitOfWork(TVShowContext tvShowContext, ITVShowRepository tvShowRepository, IShowGenreRepository genreRepository)
         {
             _context = tvShowContext;
             TVShows = tvShowRepository;

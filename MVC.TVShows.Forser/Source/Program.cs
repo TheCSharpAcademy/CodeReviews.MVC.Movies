@@ -14,8 +14,6 @@ builder.Services.AddDbContext<TVShowContext>(options =>
 .AddTransient<ITVShowRepository, TVShowRepository>()
 .AddTransient<IShowGenreRepository, ShowGenreRepository>()
 .AddTransient<IUnitOfWork, UnitOfWork>();
-//.AddTransient<IGenericRepository<TVShow>, GenericRepository<TVShow>>()
-//.AddTransient<IGenericRepository<Genre>, GenericRepository<Genre>>();
 
 WebApplication app = builder.Build();
 

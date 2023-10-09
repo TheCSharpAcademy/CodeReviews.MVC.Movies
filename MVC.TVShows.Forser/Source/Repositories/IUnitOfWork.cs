@@ -3,7 +3,7 @@
     public interface IUnitOfWork : IDisposable
     {
         ITVShowRepository TVShows { get; }
-        IGenreRepository Genres { get; }
+        IShowGenreRepository Genres { get; }
         int Complete();
     }
 }
