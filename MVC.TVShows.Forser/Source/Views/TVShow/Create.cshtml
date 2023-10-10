@@ -64,6 +64,14 @@
                     </table>
                 }
             </div>
+            <div class="form-group form-check">
+                @if (Model.allRatings != null)
+                {
+                    <select name="Rating" class="form-control" asp-items="@Model.allRatings">
+                        <option value="">-- Select Rating for TV Show --</option>
+                    </select>
+                }
+            </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

@@ -5,27 +5,32 @@
         public DbSet<TVShow> TVShows { get; set; }
         public DbSet<Genre> Genres { get; set; }
         public DbSet<Rating> Ratings { get; set; }
+        public DbSet<TVShow_Genre> TVShowGenres { get; set; }
         public TVShowContext(DbContextOptions<TVShowContext> options) : base(options) { }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<TVShow>()
                 .HasMany(e => e.Genres)
                 .WithOne(e => e.TVShow)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasForeignKey(e => e.TVShow_Id);
 
             modelBuilder.Entity<Genre>()
                 .HasMany(e => e.TVShow_Genre)
                 .WithOne(e => e.Genre)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasForeignKey(e => e.Genre_Id);
 
             modelBuilder.Entity<TVShow>()
                 .HasMany(e => e.Ratings)
                 .WithOne(e => e.TVShow)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasForeignKey(e => e.TVShow_Id);
 
             modelBuilder.Entity<Rating>()
                 .HasMany(e => e.TVShow_Rating)
                 .WithOne(e => e.Rating)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasForeignKey(e => e.Rating_Id);
 
             modelBuilder.Entity<Genre>()

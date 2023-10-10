@@ -2,5 +2,7 @@
 {
     public interface ITVShowRepository : IGenericRepository<TVShow>
     {
+        TVShow GetTVShowById(int id);
+        Task DeleteTvShow(TVShow tvShow);
     }
 }

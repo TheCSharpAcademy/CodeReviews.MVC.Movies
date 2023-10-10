@@ -27,19 +27,7 @@
 
         public void Update(T entity)
         {
-            _entities.Attach(entity);
-            _context.Entry(entity).State = EntityState.Modified;
-        }
-
-        public TVShow GetAllById(int id)
-        {
-            return _context.TVShows
-                .Include(i => i.Genres)
-                .ThenInclude(i => i.Genre)
-                .AsNoTracking()
-                .OrderBy(i => i.Id)
-                .Where(w => w.Id == id)
-                .FirstOrDefault();
+            _context.Entry(entity).CurrentValues.SetValues(entity);
         }
     }
 }

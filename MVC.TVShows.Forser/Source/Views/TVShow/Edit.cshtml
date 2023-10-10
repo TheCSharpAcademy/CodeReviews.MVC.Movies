@@ -1,4 +1,4 @@
-﻿@model MVC.TVShows.Forser.Models.TVShow
+﻿@model MVC.TVShows.Forser.Models.CreateShowModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -11,37 +11,68 @@
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
+            @Html.AntiForgeryToken()
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
+            <input type="hidden" name="id" asp-for="tvShow.Id" />
             <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
+                <label asp-for="tvShow.Title" class="control-label"></label>
+                <input asp-for="tvShow.Title" class="form-control" />
+                <span asp-validation-for="tvShow.Title" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ShowStarted" class="control-label"></label>
-                <input asp-for="ShowStarted" class="form-control" />
-                <span asp-validation-for="ShowStarted" class="text-danger"></span>
+                <label asp-for="tvShow.ShowStarted" class="control-label"></label>
+                <input asp-for="tvShow.ShowStarted" class="form-control" />
+                <span asp-validation-for="tvShow.ShowStarted" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ShowCompleted" class="control-label"></label>
-                <input asp-for="ShowCompleted" class="form-control" />
-                <span asp-validation-for="ShowCompleted" class="text-danger"></span>
+                <label asp-for="tvShow.ShowCompleted" class="control-label"></label>
+                <input asp-for="tvShow.ShowCompleted" class="form-control" />
+                <span asp-validation-for="tvShow.ShowCompleted" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="NumberOfEpisodes" class="control-label"></label>
-                <input asp-for="NumberOfEpisodes" class="form-control" />
-                <span asp-validation-for="NumberOfEpisodes" class="text-danger"></span>
+                <label asp-for="tvShow.NumberOfEpisodes" class="control-label"></label>
+                <input asp-for="tvShow.NumberOfEpisodes" class="form-control" />
+                <span asp-validation-for="tvShow.NumberOfEpisodes" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="NumberOfSeasons" class="control-label"></label>
-                <input asp-for="NumberOfSeasons" class="form-control" />
-                <span asp-validation-for="NumberOfSeasons" class="text-danger"></span>
+                <label asp-for="tvShow.NumberOfSeasons" class="control-label"></label>
+                <input asp-for="tvShow.NumberOfSeasons" class="form-control" />
+                <span asp-validation-for="tvShow.NumberOfSeasons" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="BeenWatched" /> @Html.DisplayNameFor(model => model.BeenWatched)
+                    <input class="form-check-input" asp-for="tvShow.BeenWatched" /> @Html.DisplayNameFor(model => model.tvShow.BeenWatched)
                 </label>
+            </div>
+            <div class="form-group form-check">
+                @if (Model.allGenres != null)
+                {
+                    <table>
+                        @for (int index = 0; index < Model.allGenres.Count; index++)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.CheckBoxFor(b => Model.allGenres[index].Selected)
+
+                                </td>
+                                <td>
+                                    @Html.HiddenFor(g => Model.allGenres[index].Value)
+                                    @Html.HiddenFor(t => Model.allGenres[index].Text)
+                                    @Html.DisplayFor(d => Model.allGenres[index].Text)
+                                </td>
+
+                            </tr>
+                        }
+                    </table>
+                }
+            </div>
+            <div class="form-group form-check">
+                @if (Model.allRatings != null)
+                {
+                    <select name="Rating" class="form-control" asp-items="@Model.allRatings">
+                        <option value="">-- Select Rating for TV Show --</option>
+                    </select>
+                }
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

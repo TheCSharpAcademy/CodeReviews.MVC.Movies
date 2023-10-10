@@ -18,12 +18,12 @@ namespace MVC.TVShows.Forser.Controllers
         }
         public async Task<IActionResult> Details(int id)
         {
-            if (id == null || _unitOfWork.TVShows.GetAllById(id) == null)
+            if (id == null || _unitOfWork.TVShows.GetTVShowById(id) == null)
             {
                 return NotFound();
             }
 
-            TVShow tvShow = _unitOfWork.TVShows.GetAllById(id);
+            TVShow tvShow = _unitOfWork.TVShows.GetTVShowById(id);
             if (tvShow == null)
             {
                 return NotFound();
@@ -35,36 +35,46 @@ namespace MVC.TVShows.Forser.Controllers
         {
             CreateShowModel viewModel = new CreateShowModel();
             viewModel.allGenres = (await _unitOfWork.Genres.GetAll()).ToList()
-                .Select(m => new SelectListItem { Text = m.ShowGenre, Value = m.Id.ToString()}).ToList();
+                .Select(g => new SelectListItem { Text = g.ShowGenre, Value = g.Id.ToString()}).ToList();
+            viewModel.allRatings = (await _unitOfWork.Ratings.GetAll()).ToList()
+                .Select(r => new SelectListItem { Text = r.Certification, Value = r.Id.ToString() }).ToList();
 
             return View(viewModel);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,ShowStarted,ShowCompleted,NumberOfEpisodes,NumberOfSeasons,BeenWatched,Genres")] TVShow tvShow, List<SelectListItem> allGenres)
+        public async Task<IActionResult> Create([Bind("Id,Title,ShowStarted,ShowCompleted,NumberOfEpisodes,NumberOfSeasons,BeenWatched")] TVShow tvShow, List<SelectListItem> allGenres, int Rating)
         {
             if (ModelState.IsValid)
             {
-                List<Genre> listOfGenre = generateGenreList(allGenres);
-                List<TVShow_Genre> tvShow_Genres = new List<TVShow_Genre>();
+                AssignGenresToTVShow(tvShow, allGenres);
 
-                foreach(Genre genre in listOfGenre)
-                {
-                    tvShow_Genres.Add(
-                        new TVShow_Genre 
-                        { 
-                            Genre_Id = genre.Id,
-                            TVShow_Id = tvShow.Id
-                        }
-                    );
-                }
-                tvShow.Genres = tvShow_Genres;
+                var tvShow_Rating = new TVShow_Rating { TVShow_Id = tvShow.Id, Rating_Id = Rating };
+                tvShow.Ratings = new List<TVShow_Rating> { tvShow_Rating };
 
                 await _unitOfWork.TVShows.Create(tvShow);
                 await _unitOfWork.TVShows.Save();
                 return RedirectToAction(nameof(Index));
             }
             return View(tvShow);
+        }
+
+        private void AssignGenresToTVShow(TVShow tvShow, List<SelectListItem> allGenres)
+        {
+            List<Genre> listOfGenre = generateGenreList(allGenres);
+            List<TVShow_Genre> tvShow_Genres = new List<TVShow_Genre>();
+
+            foreach (Genre genre in listOfGenre)
+            {
+                tvShow_Genres.Add(
+                    new TVShow_Genre
+                    {
+                        Genre_Id = genre.Id,
+                        TVShow_Id = tvShow.Id
+                    }
+                );
+            }
+            tvShow.Genres = tvShow_Genres;
         }
 
         private List<Genre> generateGenreList(List<SelectListItem> selectedGenres)
@@ -91,32 +101,71 @@ namespace MVC.TVShows.Forser.Controllers
                 return NotFound();
             }
 
-            var tvShow = await _unitOfWork.TVShows.GetById(id);
-            if (tvShow == null)
+            CreateShowModel viewModel = new CreateShowModel();
+            viewModel.tvShow = await _unitOfWork.TVShows.GetById(id);
+
+            viewModel.allGenres = (await _unitOfWork.Genres.GetAll()).ToList()
+                .Select(g => new SelectListItem { Text = g.ShowGenre, Value = g.Id.ToString(), Selected = g.Checked }).ToList();
+
+            var selectedGenres = _unitOfWork.Genres.GetSelectedGenres(viewModel.tvShow.Id);
+            
+            foreach (var genre in viewModel.allGenres)
             {
-                return NotFound();
+                foreach(var selected in selectedGenres)
+                {
+                    if (selected.Id.ToString() == genre.Value)
+                    {
+                        genre.Selected = true;
+                    }
+                }
             }
-            return View(tvShow);
+
+            viewModel.allRatings = (await _unitOfWork.Ratings.GetAll()).ToList()
+                .Select(r => new SelectListItem { Text = r.Certification, Value = r.Id.ToString(), Selected = r.IsSelected }).ToList();
+
+            return View(viewModel);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,ShowStarted,ShowCompleted,NumberOfEpisodes,NumberOfSeasons,BeenWatched")] TVShow tvShow)
+        public async Task<IActionResult> Edit(int id, CreateShowModel viewModel, List<SelectListItem> allGenres, int? Rating)
         {
-            if (id != tvShow.Id)
+            var exisitingTvShow = await _unitOfWork.TVShows.GetById(id);
+
+            if (exisitingTvShow == null)
             {
                 return NotFound();
             }
+
+            if (viewModel.tvShow == null) { return NotFound(); }
+
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _unitOfWork.TVShows.Update(tvShow);
+                    exisitingTvShow.Title = viewModel.tvShow.Title;
+                    exisitingTvShow.NumberOfEpisodes = viewModel.tvShow.NumberOfEpisodes;
+                    exisitingTvShow.NumberOfSeasons = viewModel.tvShow.NumberOfSeasons;
+                    exisitingTvShow.BeenWatched = viewModel.tvShow.BeenWatched;
+                    exisitingTvShow.ShowStarted = viewModel.tvShow.ShowStarted;
+                    exisitingTvShow.ShowCompleted = viewModel.tvShow.ShowCompleted;
+
+                    if (allGenres != null) 
+                    {
+                        AssignGenresToTVShow(exisitingTvShow, allGenres);
+                    }
+                    if (Rating != null)
+                    {
+                        var tvShow_Rating = new TVShow_Rating { TVShow_Id = exisitingTvShow.Id, Rating_Id = Rating };
+                        exisitingTvShow.Ratings = new List<TVShow_Rating> { tvShow_Rating };
+                    }
+
+                    _unitOfWork.TVShows.Update(exisitingTvShow);
                     await _unitOfWork.TVShows.Save();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TVShowExists(tvShow.Id))
+                    if (!TVShowExists(exisitingTvShow.Id))
                     {
                         return NotFound();
                     }
@@ -127,7 +176,29 @@ namespace MVC.TVShows.Forser.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(tvShow);
+            if (!ModelState.IsValid)
+            {
+                foreach (var key in ModelState.Keys)
+                {
+                    var errors = ModelState[key].Errors;
+                    if (errors.Count > 0)
+                    {
+                        foreach (var error in errors)
+                        {
+                            var errorMessage = error.ErrorMessage;
+                            var errorException = error.Exception;
+
+                            Console.WriteLine($"Model binding error for key: {key}, Error: {errorMessage}");
+
+                            if (errorException != null)
+                            {
+                                Console.WriteLine($"Exception: {errorException.Message}");
+                            }
+                        }
+                    }
+                }
+            }
+            return View(viewModel);
         }
         private bool TVShowExists(int id)
         {
@@ -136,13 +207,13 @@ namespace MVC.TVShows.Forser.Controllers
             else
                 return false;
         }
-        public async Task<IActionResult> Delete(int id)
+        public IActionResult Delete(int id)
         {
-            if (id == null || (await _unitOfWork.TVShows.GetById(id)) == null)
+            if (id == null || _unitOfWork.TVShows.GetTVShowById(id) == null)
             {
                 return NotFound();
             }
-            var tvShow = await _unitOfWork.TVShows.GetById(id);
+            var tvShow = _unitOfWork.TVShows.GetTVShowById(id);
             if (tvShow == null)
             {
                 return NotFound();
@@ -151,16 +222,16 @@ namespace MVC.TVShows.Forser.Controllers
         }
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(TVShow deleteTvShow)
         {
             if (_unitOfWork.TVShows == null)
             {
                 return Problem("Entity set 'TVShows'  is null.");
             }
-            TVShow tvShow = await _unitOfWork.TVShows.GetById(id);
+            TVShow tvShow =_unitOfWork.TVShows.GetTVShowById(deleteTvShow.Id);
             if (tvShow != null)
             {
-                await _unitOfWork.TVShows.Delete(tvShow);
+                await _unitOfWork.TVShows.DeleteTvShow(tvShow);
             }
 
             await _unitOfWork.TVShows.Save();

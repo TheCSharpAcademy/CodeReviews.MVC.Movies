@@ -4,6 +4,7 @@ using MVC.TVShows.Forser.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MVC.TVShows.Forser.Migrations
 {
     [DbContext(typeof(TVShowContext))]
-    partial class TVShowContextModelSnapshot : ModelSnapshot
+    [Migration("20231010154147_MoreUpdatesToDataModels")]
+    partial class MoreUpdatesToDataModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -4,6 +4,7 @@ using MVC.TVShows.Forser.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MVC.TVShows.Forser.Migrations
 {
     [DbContext(typeof(TVShowContext))]
-    partial class TVShowContextModelSnapshot : ModelSnapshot
+    [Migration("20231010095624_UpdatedTheNavigationProperties")]
+    partial class UpdatedTheNavigationProperties
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -231,10 +234,10 @@ namespace MVC.TVShows.Forser.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Genre_Id")
+                    b.Property<int?>("Genre_Id")
                         .HasColumnType("int");
 
-                    b.Property<int>("TVShow_Id")
+                    b.Property<int?>("TVShow_Id")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -243,7 +246,7 @@ namespace MVC.TVShows.Forser.Migrations
 
                     b.HasIndex("TVShow_Id");
 
-                    b.ToTable("TVShowGenres");
+                    b.ToTable("TVShow_Genre");
                 });
 
             modelBuilder.Entity("MVC.TVShows.Forser.Models.TVShow_Rating", b =>
@@ -292,14 +295,12 @@ namespace MVC.TVShows.Forser.Migrations
                     b.HasOne("MVC.TVShows.Forser.Models.Genre", "Genre")
                         .WithMany("TVShow_Genre")
                         .HasForeignKey("Genre_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("MVC.TVShows.Forser.Models.TVShow", "TVShow")
                         .WithMany("Genres")
                         .HasForeignKey("TVShow_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Genre");
 
