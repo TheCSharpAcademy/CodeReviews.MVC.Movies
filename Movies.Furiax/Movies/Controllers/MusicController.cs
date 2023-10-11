@@ -14,15 +14,21 @@ namespace Movies.Controllers
             _context = context;
         }
 
-        // GET: Musics
-        public async Task<IActionResult> Index()
+        // GET: Music
+        public async Task<IActionResult> Index(string searchArtist)
         {
-            return _context.Music != null ?
-                        View(await _context.Music.ToListAsync()) :
-                        Problem("Entity set 'MoviesContext.Music'  is null.");
+            var music = from m in _context.Music
+                        select m;
+            if (!string.IsNullOrEmpty(searchArtist))
+            {
+                music = music.Where(s => s.Artist!.Contains(searchArtist));
+            }
+
+
+            return View(await music.ToListAsync());
         }
 
-        // GET: Musics/Details/5
+        // GET: Music/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Music == null)
@@ -40,13 +46,13 @@ namespace Movies.Controllers
             return View(music);
         }
 
-        // GET: Musics/Create
+        // GET: Music/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Musics/Create
+        // POST: Music/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -62,7 +68,7 @@ namespace Movies.Controllers
             return View(music);
         }
 
-        // GET: Musics/Edit/5
+        // GET: Music/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Music == null)
@@ -78,7 +84,7 @@ namespace Movies.Controllers
             return View(music);
         }
 
-        // POST: Musics/Edit/5
+        // POST: Music/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -113,7 +119,7 @@ namespace Movies.Controllers
             return View(music);
         }
 
-        // GET: Musics/Delete/5
+        // GET: Music/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Music == null)
@@ -131,7 +137,7 @@ namespace Movies.Controllers
             return View(music);
         }
 
-        // POST: Musics/Delete/5
+        // POST: Music/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
