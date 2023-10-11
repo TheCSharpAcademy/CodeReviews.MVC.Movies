@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace MVC.TVShows.Forser.Models
+﻿namespace MVC.TVShows.Forser.Models
 {
     public class Rating
     {
@@ -12,7 +9,6 @@ namespace MVC.TVShows.Forser.Models
         public string Certification { get; set; } = string.Empty;
         public string? Description { get; set; }
         public bool IsSelected { get; set; }
-        public IEnumerable<TVShow_Rating>? TVShow_Rating {  get; set; }
-        public TVShow? TVShow { get; set; }
+        public IEnumerable<TVShow_Rating>? TVShow_Ratings { get; set; }
     }
 }

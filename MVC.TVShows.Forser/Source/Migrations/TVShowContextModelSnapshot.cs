@@ -37,12 +37,7 @@ namespace MVC.TVShows.Forser.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("TVShowId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("TVShowId");
 
                     b.ToTable("Genres");
 
@@ -155,12 +150,7 @@ namespace MVC.TVShows.Forser.Migrations
                     b.Property<bool>("IsSelected")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("TVShowId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("TVShowId");
 
                     b.ToTable("Ratings");
 
@@ -225,78 +215,56 @@ namespace MVC.TVShows.Forser.Migrations
 
             modelBuilder.Entity("MVC.TVShows.Forser.Models.TVShow_Genre", b =>
                 {
+                    b.Property<int>("TVShow_Id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Genre_Id")
+                        .HasColumnType("int");
+
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Genre_Id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TVShow_Id")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
+                    b.HasKey("TVShow_Id", "Genre_Id");
 
                     b.HasIndex("Genre_Id");
-
-                    b.HasIndex("TVShow_Id");
 
                     b.ToTable("TVShowGenres");
                 });
 
             modelBuilder.Entity("MVC.TVShows.Forser.Models.TVShow_Rating", b =>
                 {
+                    b.Property<int?>("TVShow_Id")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Rating_Id")
+                        .HasColumnType("int");
+
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("Rating_Id")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TVShow_Id")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
+                    b.HasKey("TVShow_Id", "Rating_Id");
 
                     b.HasIndex("Rating_Id");
 
-                    b.HasIndex("TVShow_Id");
-
                     b.ToTable("TVShow_Rating");
-                });
-
-            modelBuilder.Entity("MVC.TVShows.Forser.Models.Genre", b =>
-                {
-                    b.HasOne("MVC.TVShows.Forser.Models.TVShow", "TVShow")
-                        .WithMany()
-                        .HasForeignKey("TVShowId");
-
-                    b.Navigation("TVShow");
-                });
-
-            modelBuilder.Entity("MVC.TVShows.Forser.Models.Rating", b =>
-                {
-                    b.HasOne("MVC.TVShows.Forser.Models.TVShow", "TVShow")
-                        .WithMany()
-                        .HasForeignKey("TVShowId");
-
-                    b.Navigation("TVShow");
                 });
 
             modelBuilder.Entity("MVC.TVShows.Forser.Models.TVShow_Genre", b =>
                 {
                     b.HasOne("MVC.TVShows.Forser.Models.Genre", "Genre")
-                        .WithMany("TVShow_Genre")
+                        .WithMany("TVShow_Genres")
                         .HasForeignKey("Genre_Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("MVC.TVShows.Forser.Models.TVShow", "TVShow")
-                        .WithMany("Genres")
+                        .WithMany("TVShow_Genres")
                         .HasForeignKey("TVShow_Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -309,14 +277,16 @@ namespace MVC.TVShows.Forser.Migrations
             modelBuilder.Entity("MVC.TVShows.Forser.Models.TVShow_Rating", b =>
                 {
                     b.HasOne("MVC.TVShows.Forser.Models.Rating", "Rating")
-                        .WithMany("TVShow_Rating")
+                        .WithMany("TVShow_Ratings")
                         .HasForeignKey("Rating_Id")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("MVC.TVShows.Forser.Models.TVShow", "TVShow")
-                        .WithMany("Ratings")
+                        .WithMany("TVShow_Ratings")
                         .HasForeignKey("TVShow_Id")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Rating");
 
@@ -325,19 +295,19 @@ namespace MVC.TVShows.Forser.Migrations
 
             modelBuilder.Entity("MVC.TVShows.Forser.Models.Genre", b =>
                 {
-                    b.Navigation("TVShow_Genre");
+                    b.Navigation("TVShow_Genres");
                 });
 
             modelBuilder.Entity("MVC.TVShows.Forser.Models.Rating", b =>
                 {
-                    b.Navigation("TVShow_Rating");
+                    b.Navigation("TVShow_Ratings");
                 });
 
             modelBuilder.Entity("MVC.TVShows.Forser.Models.TVShow", b =>
                 {
-                    b.Navigation("Genres");
+                    b.Navigation("TVShow_Genres");
 
-                    b.Navigation("Ratings");
+                    b.Navigation("TVShow_Ratings");
                 });
 #pragma warning restore 612, 618
         }

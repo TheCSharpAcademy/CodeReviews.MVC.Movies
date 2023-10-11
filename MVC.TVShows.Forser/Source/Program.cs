@@ -5,12 +5,13 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<TVShowContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionString"));
+    options.EnableSensitiveDataLogging();
 })
 .AddScoped<TVShowContext>()
 .AddTransient<ITVShowRepository, TVShowRepository>()
 .AddTransient<IShowGenreRepository, ShowGenreRepository>()
 .AddTransient<IRatingRepository, RatingRepository>()
-.AddTransient<IUnitOfWork, UnitOfWork>();
+.AddScoped<IUnitOfWork, UnitOfWork>();
 
 WebApplication app = builder.Build();
 

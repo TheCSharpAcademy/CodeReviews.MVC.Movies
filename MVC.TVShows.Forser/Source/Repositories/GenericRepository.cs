@@ -10,24 +10,18 @@
             _context = context;
             _entities = context.Set<T>();
         }
-
         public async Task Create(T entity) => await _context.AddAsync(entity);
-
         public async Task Delete(T entity)
         {
             T existing = await _entities.FindAsync(entity);
             _entities.Remove(existing);
         }
-
         public async Task<IEnumerable<T>> GetAll() => await _entities.ToListAsync();
-
         public async Task<T> GetById(int id) => await _entities.FindAsync(id);
-
         public async Task Save() => await _context.SaveChangesAsync();
-
         public void Update(T entity)
         {
-            _context.Entry(entity).CurrentValues.SetValues(entity);
+            _context.Update(entity);
         }
     }
 }

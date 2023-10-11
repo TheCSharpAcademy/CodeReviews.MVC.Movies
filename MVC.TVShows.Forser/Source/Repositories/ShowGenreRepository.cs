@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace MVC.TVShows.Forser.Repositories
+﻿namespace MVC.TVShows.Forser.Repositories
 {
     public class ShowGenreRepository : GenericRepository<Genre>, IShowGenreRepository
     {
@@ -9,7 +7,6 @@ namespace MVC.TVShows.Forser.Repositories
         {
             _context = context;
         }
-
         public List<Genre> GetSelectedGenres(int id)
         {
             List<Genre> selectedGenres = null;

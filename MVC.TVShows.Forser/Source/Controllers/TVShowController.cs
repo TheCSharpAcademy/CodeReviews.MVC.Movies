@@ -47,10 +47,10 @@ namespace MVC.TVShows.Forser.Controllers
         {
             if (ModelState.IsValid)
             {
-                AssignGenresToTVShow(tvShow, allGenres);
+                _unitOfWork.TVShows.AssignGenresToTVShow(tvShow, allGenres);
 
                 var tvShow_Rating = new TVShow_Rating { TVShow_Id = tvShow.Id, Rating_Id = Rating };
-                tvShow.Ratings = new List<TVShow_Rating> { tvShow_Rating };
+                tvShow.TVShow_Ratings = new List<TVShow_Rating> { tvShow_Rating };
 
                 await _unitOfWork.TVShows.Create(tvShow);
                 await _unitOfWork.TVShows.Save();
@@ -58,42 +58,6 @@ namespace MVC.TVShows.Forser.Controllers
             }
             return View(tvShow);
         }
-
-        private void AssignGenresToTVShow(TVShow tvShow, List<SelectListItem> allGenres)
-        {
-            List<Genre> listOfGenre = generateGenreList(allGenres);
-            List<TVShow_Genre> tvShow_Genres = new List<TVShow_Genre>();
-
-            foreach (Genre genre in listOfGenre)
-            {
-                tvShow_Genres.Add(
-                    new TVShow_Genre
-                    {
-                        Genre_Id = genre.Id,
-                        TVShow_Id = tvShow.Id
-                    }
-                );
-            }
-            tvShow.Genres = tvShow_Genres;
-        }
-
-        private List<Genre> generateGenreList(List<SelectListItem> selectedGenres)
-        {
-            List<Genre> generatedGenreList = new List<Genre>();
-
-            var temp = selectedGenres.Where(s => s.Selected == true);
-
-            foreach (var genre in temp)
-            {
-                    generatedGenreList.Add(
-                        new Genre { 
-                            Id = Convert.ToInt32(genre.Value), ShowGenre = genre.Text, Checked = genre.Selected 
-                        });
-            }
-
-            return generatedGenreList;
-        }
-
         public async Task<IActionResult> Edit(int id)
         {
             if (id == null || (await _unitOfWork.TVShows.GetById(id)) == null)
@@ -104,14 +68,23 @@ namespace MVC.TVShows.Forser.Controllers
             CreateShowModel viewModel = new CreateShowModel();
             viewModel.tvShow = await _unitOfWork.TVShows.GetById(id);
 
+            await PopulateSelectedGenreCheckboxes(viewModel);
+
+            viewModel.allRatings = (await _unitOfWork.Ratings.GetAll()).ToList()
+                .Select(r => new SelectListItem { Text = r.Certification, Value = r.Id.ToString(), Selected = r.IsSelected }).ToList();
+
+            return View(viewModel);
+        }
+        private async Task PopulateSelectedGenreCheckboxes(CreateShowModel viewModel)
+        {
             viewModel.allGenres = (await _unitOfWork.Genres.GetAll()).ToList()
                 .Select(g => new SelectListItem { Text = g.ShowGenre, Value = g.Id.ToString(), Selected = g.Checked }).ToList();
 
             var selectedGenres = _unitOfWork.Genres.GetSelectedGenres(viewModel.tvShow.Id);
-            
+
             foreach (var genre in viewModel.allGenres)
             {
-                foreach(var selected in selectedGenres)
+                foreach (var selected in selectedGenres)
                 {
                     if (selected.Id.ToString() == genre.Value)
                     {
@@ -119,11 +92,6 @@ namespace MVC.TVShows.Forser.Controllers
                     }
                 }
             }
-
-            viewModel.allRatings = (await _unitOfWork.Ratings.GetAll()).ToList()
-                .Select(r => new SelectListItem { Text = r.Certification, Value = r.Id.ToString(), Selected = r.IsSelected }).ToList();
-
-            return View(viewModel);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -138,7 +106,6 @@ namespace MVC.TVShows.Forser.Controllers
 
             if (viewModel.tvShow == null) { return NotFound(); }
 
-
             if (ModelState.IsValid)
             {
                 try
@@ -152,15 +119,15 @@ namespace MVC.TVShows.Forser.Controllers
 
                     if (allGenres != null) 
                     {
-                        AssignGenresToTVShow(exisitingTvShow, allGenres);
+                        ///AssignGenresToTVShow(exisitingTvShow, allGenres);
                     }
                     if (Rating != null)
                     {
                         var tvShow_Rating = new TVShow_Rating { TVShow_Id = exisitingTvShow.Id, Rating_Id = Rating };
-                        exisitingTvShow.Ratings = new List<TVShow_Rating> { tvShow_Rating };
+                        exisitingTvShow.TVShow_Ratings = new List<TVShow_Rating> { tvShow_Rating };
                     }
 
-                    _unitOfWork.TVShows.Update(exisitingTvShow);
+                    await _unitOfWork.TVShows.UpdateTvShow(exisitingTvShow, allGenres);
                     await _unitOfWork.TVShows.Save();
                 }
                 catch (DbUpdateConcurrencyException)

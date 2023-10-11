@@ -50,9 +50,9 @@
             Genres
         </dt>
         <dd class="col-sm-10">
-            @if (Model.Genres != null)
+            @if (Model.TVShow_Genres != null)
             {
-                @foreach (var genre in Model.Genres)
+                @foreach (var genre in Model.TVShow_Genres)
                 {
                     <p>@genre.Genre.ShowGenre</p>
                 }
@@ -62,9 +62,9 @@
             TV Show Certification Rating
         </dt>
         <dd class="col-sm-10">
-            @if (Model.Ratings != null)
+            @if (Model.TVShow_Ratings != null)
             {
-                @foreach (var rating in Model.Ratings)
+                @foreach (var rating in Model.TVShow_Ratings)
                 {
                     <p>@rating.Rating.Certification</p>
                 }

@@ -9,29 +9,41 @@
         public TVShowContext(DbContextOptions<TVShowContext> options) : base(options) { }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<TVShow_Genre>()
+                .HasKey(sg => new { sg.TVShow_Id, sg.Genre_Id });
+
+            modelBuilder.Entity<TVShow_Genre>()
+                .HasOne(sg => sg.TVShow)
+                .WithMany(s => s.TVShow_Genres)
+                .HasForeignKey(sg => sg.TVShow_Id);
+
+            modelBuilder.Entity<TVShow_Genre>()
+                .HasOne(sg => sg.Genre)
+                .WithMany(s => s.TVShow_Genres)
+                .HasForeignKey(sg => sg.Genre_Id);
+
+            modelBuilder.Entity<TVShow_Rating>()
+                .HasKey(sg => new { sg.TVShow_Id, sg.Rating_Id });
+
+            modelBuilder.Entity<TVShow_Rating>()
+                .HasOne(sg => sg.TVShow)
+                .WithMany(s => s.TVShow_Ratings)
+                .HasForeignKey(sg => sg.TVShow_Id);
+
+            modelBuilder.Entity<TVShow_Rating>()
+                .HasOne(sg => sg.Rating)
+                .WithMany(s => s.TVShow_Ratings)
+                .HasForeignKey(sg => sg.Rating_Id);
+
             modelBuilder.Entity<TVShow>()
-                .HasMany(e => e.Genres)
-                .WithOne(e => e.TVShow)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasForeignKey(e => e.TVShow_Id);
+                .HasMany(s => s.TVShow_Genres)
+                .WithOne(sg => sg.TVShow)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Genre>()
-                .HasMany(e => e.TVShow_Genre)
-                .WithOne(e => e.Genre)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasForeignKey(e => e.Genre_Id);
-
-            modelBuilder.Entity<TVShow>()
-                .HasMany(e => e.Ratings)
-                .WithOne(e => e.TVShow)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasForeignKey(e => e.TVShow_Id);
-
-            modelBuilder.Entity<Rating>()
-                .HasMany(e => e.TVShow_Rating)
-                .WithOne(e => e.Rating)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasForeignKey(e => e.Rating_Id);
+                .HasMany(g => g.TVShow_Genres)
+                .WithOne(sg => sg.Genre)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Genre>()
                 .HasData(
