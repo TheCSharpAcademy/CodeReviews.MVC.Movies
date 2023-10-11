@@ -18,6 +18,7 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     SeedData.Initialize(services);
+    SeedDataMusic.Initialize(services);
 }
 
 // Configure the HTTP request pipeline.
