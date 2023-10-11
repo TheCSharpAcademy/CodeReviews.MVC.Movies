@@ -56,6 +56,18 @@
             }
             tvShow.TVShow_Genres = tvShow_Genres;
         }
+        public void AssignRatingToTVShow(TVShow tvShow, int ratingId)
+        {
+            List<TVShow_Rating> tvShow_Rating = new List<TVShow_Rating>();
+
+            tvShow_Rating.Add(new TVShow_Rating
+            {
+                Rating_Id = Convert.ToInt32(ratingId),
+                TVShow_Id = tvShow.Id
+            });
+
+            tvShow.TVShow_Ratings = tvShow_Rating;
+        }
         private static List<Genre> GenerateGenreList(List<SelectListItem> selectedGenres)
         {
             List<Genre> generatedGenreList = new List<Genre>();
@@ -75,15 +87,17 @@
 
             return generatedGenreList;
         }
-        public async Task UpdateTvShow(TVShow tvShow, List<SelectListItem>? allGenres)
+        public async Task UpdateTvShow(TVShow tvShow, List<SelectListItem>? allGenres, int ratingId)
         {
             AssignGenresToTVShow(tvShow, allGenres);
+            AssignRatingToTVShow(tvShow, ratingId);
 
-            var existingRecords = await _context.TVShowGenres.ToListAsync();
+            var existingGenreRecords = await _context.TVShowGenres.ToListAsync();
+            var existingRatingRecords = await _context.TVShowRatings.ToListAsync();
 
             foreach (var update in tvShow.TVShow_Genres)
             {
-                var existingRecord = existingRecords.FirstOrDefault(sg => sg.TVShow_Id == update.TVShow_Id && sg.Genre_Id == update.Genre_Id);
+                var existingRecord = existingGenreRecords.FirstOrDefault(sg => sg.TVShow_Id == update.TVShow_Id && sg.Genre_Id == update.Genre_Id);
 
                 if (existingRecord != null)
                 {
@@ -91,18 +105,41 @@
                     {
                         if (existingRecord.Genre_Id == Convert.ToInt32(genre.Value) && !genre.Selected)
                         {
-                            existingRecords.Remove(existingRecord);
+                            existingGenreRecords.Remove(existingRecord);
                         }
                     }
                 }
                 else
                 {
                     var newRecord = new TVShow_Genre { TVShow_Id = update.TVShow_Id, Genre_Id = update.Genre_Id };
-                    existingRecords.Add(newRecord);
+                    existingGenreRecords.Add(newRecord);
                 }
             }
 
-            tvShow.TVShow_Genres = existingRecords;
+            foreach (var update in tvShow.TVShow_Ratings)
+            {
+                if (update != null)
+                {
+                    var existingRecord = existingRatingRecords.FirstOrDefault(sg => sg.TVShow_Id == update.TVShow_Id && sg.Rating_Id != ratingId);
+
+                    if (existingRecord != null)
+                    {
+
+                        if (existingRecord.Rating_Id != ratingId)
+                        {
+                            existingRatingRecords.Remove(existingRecord);
+                        }
+                    }
+                    else
+                    {
+                        var newRecord = new TVShow_Rating() { TVShow_Id = update.TVShow_Id, Rating_Id = ratingId };
+                        existingRatingRecords.Add(newRecord);
+                    }
+                }
+            }
+
+            tvShow.TVShow_Genres = existingGenreRecords;
+            tvShow.TVShow_Ratings = existingRatingRecords;
 
             await _context.SaveChangesAsync();
         }

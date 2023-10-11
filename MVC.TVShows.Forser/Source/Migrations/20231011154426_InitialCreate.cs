@@ -62,32 +62,6 @@ namespace MVC.TVShows.Forser.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TVShow_Rating",
-                columns: table => new
-                {
-                    TVShow_Id = table.Column<int>(type: "int", nullable: false),
-                    Rating_Id = table.Column<int>(type: "int", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TVShow_Rating", x => new { x.TVShow_Id, x.Rating_Id });
-                    table.ForeignKey(
-                        name: "FK_TVShow_Rating_Ratings_Rating_Id",
-                        column: x => x.Rating_Id,
-                        principalTable: "Ratings",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_TVShow_Rating_TVShows_TVShow_Id",
-                        column: x => x.TVShow_Id,
-                        principalTable: "TVShows",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "TVShowGenres",
                 columns: table => new
                 {
@@ -107,6 +81,32 @@ namespace MVC.TVShows.Forser.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_TVShowGenres_TVShows_TVShow_Id",
+                        column: x => x.TVShow_Id,
+                        principalTable: "TVShows",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TVShowRatings",
+                columns: table => new
+                {
+                    TVShow_Id = table.Column<int>(type: "int", nullable: false),
+                    Rating_Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TVShowRatings", x => new { x.TVShow_Id, x.Rating_Id });
+                    table.ForeignKey(
+                        name: "FK_TVShowRatings_Ratings_Rating_Id",
+                        column: x => x.Rating_Id,
+                        principalTable: "Ratings",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_TVShowRatings_TVShows_TVShow_Id",
                         column: x => x.TVShow_Id,
                         principalTable: "TVShows",
                         principalColumn: "Id",
@@ -145,30 +145,30 @@ namespace MVC.TVShows.Forser.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_TVShow_Rating_Rating_Id",
-                table: "TVShow_Rating",
-                column: "Rating_Id");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_TVShowGenres_Genre_Id",
                 table: "TVShowGenres",
                 column: "Genre_Id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TVShowRatings_Rating_Id",
+                table: "TVShowRatings",
+                column: "Rating_Id");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "TVShow_Rating");
-
-            migrationBuilder.DropTable(
                 name: "TVShowGenres");
 
             migrationBuilder.DropTable(
-                name: "Ratings");
+                name: "TVShowRatings");
 
             migrationBuilder.DropTable(
                 name: "Genres");
+
+            migrationBuilder.DropTable(
+                name: "Ratings");
 
             migrationBuilder.DropTable(
                 name: "TVShows");

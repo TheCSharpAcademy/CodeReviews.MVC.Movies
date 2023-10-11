@@ -1,12 +1,11 @@
 ﻿@model MVC.TVShows.Forser.Models.CreateShowModel
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit an TV Show";
 }
 
-<h1>Edit</h1>
+<h1>Edit an TV Show</h1>
 
-<h4>TVShow</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -69,7 +68,7 @@
             <div class="form-group form-check">
                 @if (Model.allRatings != null)
                 {
-                    <select name="Rating" class="form-control" asp-items="@Model.allRatings">
+                    <select name="allRatings" id="allRatings" class="form-control" asp-items="@Model.allRatings">
                         <option value="">-- Select Rating for TV Show --</option>
                     </select>
                 }

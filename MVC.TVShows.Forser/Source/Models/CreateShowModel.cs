@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
-
-namespace MVC.TVShows.Forser.Models
+﻿namespace MVC.TVShows.Forser.Models
 {
     public class CreateShowModel
     {

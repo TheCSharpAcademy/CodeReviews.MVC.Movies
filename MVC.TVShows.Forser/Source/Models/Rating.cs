@@ -9,6 +9,6 @@
         public string Certification { get; set; } = string.Empty;
         public string? Description { get; set; }
         public bool IsSelected { get; set; }
-        public IEnumerable<TVShow_Rating>? TVShow_Ratings { get; set; }
+        public IEnumerable<TVShow_Rating> TVShow_Ratings { get; set; }
     }
 }

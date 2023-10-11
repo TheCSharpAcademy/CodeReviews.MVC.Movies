@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MVC.TVShows.Forser.Migrations
 {
     [DbContext(typeof(TVShowContext))]
-    [Migration("20231011100404_InitialCreate")]
+    [Migration("20231011154426_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -239,10 +239,10 @@ namespace MVC.TVShows.Forser.Migrations
 
             modelBuilder.Entity("MVC.TVShows.Forser.Models.TVShow_Rating", b =>
                 {
-                    b.Property<int?>("TVShow_Id")
+                    b.Property<int>("TVShow_Id")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Rating_Id")
+                    b.Property<int>("Rating_Id")
                         .HasColumnType("int");
 
                     b.Property<int>("Id")
@@ -255,7 +255,7 @@ namespace MVC.TVShows.Forser.Migrations
 
                     b.HasIndex("Rating_Id");
 
-                    b.ToTable("TVShow_Rating");
+                    b.ToTable("TVShowRatings");
                 });
 
             modelBuilder.Entity("MVC.TVShows.Forser.Models.TVShow_Genre", b =>

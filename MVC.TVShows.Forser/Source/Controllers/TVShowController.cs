@@ -69,11 +69,24 @@ namespace MVC.TVShows.Forser.Controllers
             viewModel.tvShow = await _unitOfWork.TVShows.GetById(id);
 
             await PopulateSelectedGenreCheckboxes(viewModel);
+            await PopulateSelectedRatingDropDown(viewModel);
 
+            return View(viewModel);
+        }
+        private async Task PopulateSelectedRatingDropDown(CreateShowModel viewModel)
+        {
             viewModel.allRatings = (await _unitOfWork.Ratings.GetAll()).ToList()
                 .Select(r => new SelectListItem { Text = r.Certification, Value = r.Id.ToString(), Selected = r.IsSelected }).ToList();
 
-            return View(viewModel);
+            var selectedRating = _unitOfWork.Ratings.GetSelectedRating(viewModel.tvShow.Id);
+
+            foreach (var rating in viewModel.allRatings)
+            {
+                if (selectedRating.Id == Convert.ToInt32(rating.Value))
+                {
+                    rating.Selected = true;
+                }
+            }
         }
         private async Task PopulateSelectedGenreCheckboxes(CreateShowModel viewModel)
         {
@@ -95,7 +108,7 @@ namespace MVC.TVShows.Forser.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, CreateShowModel viewModel, List<SelectListItem> allGenres, int? Rating)
+        public async Task<IActionResult> Edit(int id, CreateShowModel viewModel, List<SelectListItem> allGenres, int allRatings)
         {
             var exisitingTvShow = await _unitOfWork.TVShows.GetById(id);
 
@@ -117,17 +130,7 @@ namespace MVC.TVShows.Forser.Controllers
                     exisitingTvShow.ShowStarted = viewModel.tvShow.ShowStarted;
                     exisitingTvShow.ShowCompleted = viewModel.tvShow.ShowCompleted;
 
-                    if (allGenres != null) 
-                    {
-                        ///AssignGenresToTVShow(exisitingTvShow, allGenres);
-                    }
-                    if (Rating != null)
-                    {
-                        var tvShow_Rating = new TVShow_Rating { TVShow_Id = exisitingTvShow.Id, Rating_Id = Rating };
-                        exisitingTvShow.TVShow_Ratings = new List<TVShow_Rating> { tvShow_Rating };
-                    }
-
-                    await _unitOfWork.TVShows.UpdateTvShow(exisitingTvShow, allGenres);
+                    await _unitOfWork.TVShows.UpdateTvShow(exisitingTvShow, allGenres, allRatings);
                     await _unitOfWork.TVShows.Save();
                 }
                 catch (DbUpdateConcurrencyException)

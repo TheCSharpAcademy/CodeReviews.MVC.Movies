@@ -4,7 +4,7 @@
     {
         TVShow GetTVShowById(int id);
         Task DeleteTvShow(TVShow tvShow);
-        Task UpdateTvShow(TVShow tvShow, List<SelectListItem>? allGenres);
+        Task UpdateTvShow(TVShow tvShow, List<SelectListItem>? allGenres, int ratingId);
         void AssignGenresToTVShow(TVShow tvShow, List<SelectListItem> allGenres);
     }
 }

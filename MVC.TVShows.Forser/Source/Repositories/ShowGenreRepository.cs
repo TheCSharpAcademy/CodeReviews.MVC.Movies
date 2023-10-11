@@ -16,15 +16,6 @@
                     .Where(tg => tg.TVShow_Id == id)
                     .Select(tg => tg.Genre)
                     .ToList();
-                    
-                //_context.TVShows
-                //.Include(g => g.Genres)
-                //.ThenInclude(g => g.Genre)
-                //.Include(r => r.Ratings)
-                //.ThenInclude(r => r.Rating)
-                //.OrderBy(i => i.Id)
-                //.Where(w => w.Id == id)
-                //.FirstOrDefault();
             }
             catch (Exception ex)
             {

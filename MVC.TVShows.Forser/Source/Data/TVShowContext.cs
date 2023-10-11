@@ -6,6 +6,7 @@
         public DbSet<Genre> Genres { get; set; }
         public DbSet<Rating> Ratings { get; set; }
         public DbSet<TVShow_Genre> TVShowGenres { get; set; }
+        public DbSet<TVShow_Rating> TVShowRatings { get; set; }
         public TVShowContext(DbContextOptions<TVShowContext> options) : base(options) { }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

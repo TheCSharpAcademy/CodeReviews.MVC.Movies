@@ -5,7 +5,6 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<TVShowContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionString"));
-    options.EnableSensitiveDataLogging();
 })
 .AddScoped<TVShowContext>()
 .AddTransient<ITVShowRepository, TVShowRepository>()
@@ -34,6 +33,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{tvshowId?}");
+    pattern: "{controller=TVShow}/{action=Index}/{tvshowId?}");
 
 app.Run();
