@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Movies.Data;
 using Movies.Models;
@@ -15,17 +16,32 @@ namespace Movies.Controllers
         }
 
         // GET: Music
-        public async Task<IActionResult> Index(string searchArtist)
+        public async Task<IActionResult> Index(string searchArtist, string musicGenre)
         {
+            IQueryable<string> genreQuery = from m in _context.Music
+                                            orderby m.Genre
+                                            select m.Genre;
+
             var music = from m in _context.Music
                         select m;
+
             if (!string.IsNullOrEmpty(searchArtist))
             {
                 music = music.Where(s => s.Artist!.Contains(searchArtist));
             }
 
+            if(!string.IsNullOrEmpty(musicGenre))
+            {
+                music = music.Where(x => x.Genre == musicGenre);
+            }
 
-            return View(await music.ToListAsync());
+            var musicGenreVM = new MusicGenreViewModel
+            {
+                Genres = new SelectList(await genreQuery.Distinct().ToListAsync()),
+                Music = await music.ToListAsync()
+            };
+
+            return View(musicGenreVM);
         }
 
         // GET: Music/Details/5
