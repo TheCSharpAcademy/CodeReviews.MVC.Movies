@@ -3,7 +3,7 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome @@ Movies & Music</h1>
+    <h1 class="display-4">Welcome</h1>
     <h2 class="mt-4">Make your choice:</h2>
     
 </div>
@@ -12,12 +12,15 @@
     <div class="row">
         <div class="col-md-6">
             <h2>Movies</h2>
+            <a asp-controller="Movies" asp-action="Index">          
                 <img src="https://cdn.pixabay.com/photo/2022/07/17/19/22/movie-7328179_960_720.png" class="img-fluid img-fluid-height" />
-           
+            </a>
         </div>
        <div class="col-md-6">
            <h2>Music</h2>
-            <img src="https://cdn.pixabay.com/photo/2018/02/17/00/15/cute-3158996_960_720.jpg" class="img-fluid img-fluid-height" />
+           <a asp-controller="Movies" asp-action="Index">
+                <img src="https://cdn.pixabay.com/photo/2018/02/17/00/15/cute-3158996_960_720.jpg" class="img-fluid img-fluid-height" />
+            </a>
        </div>
     </div>
 
