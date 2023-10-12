@@ -16,3 +16,8 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.img-fluid-height{
+    height: 300px;
+    object-fit: cover;
+}
