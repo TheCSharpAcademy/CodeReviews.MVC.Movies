@@ -23,7 +23,7 @@
         public int NumberOfSeasons { get; set; }
         [DisplayName("Have watched the Show")]
         public bool BeenWatched { get; set; } = false;
-        public IEnumerable<TVShow_Rating>? TVShow_Ratings { get; set; }
+        public TVShow_Rating? TVShow_Rating { get; set; }
         public IEnumerable<TVShow_Genre>? TVShow_Genres { get; set; }
     }
 }

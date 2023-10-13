@@ -28,13 +28,13 @@
 
             modelBuilder.Entity<TVShow_Rating>()
                 .HasOne(sg => sg.TVShow)
-                .WithMany(s => s.TVShow_Ratings)
-                .HasForeignKey(sg => sg.TVShow_Id);
+                .WithOne(s => s.TVShow_Rating)
+                .HasForeignKey<TVShow_Rating>(sg => sg.TVShow_Id);
 
             modelBuilder.Entity<TVShow_Rating>()
                 .HasOne(sg => sg.Rating)
-                .WithMany(s => s.TVShow_Ratings)
-                .HasForeignKey(sg => sg.Rating_Id);
+                .WithOne(s => s.TVShow_Rating)
+                .HasForeignKey<TVShow_Rating>(sg => sg.Rating_Id);
 
             modelBuilder.Entity<TVShow>()
                 .HasMany(s => s.TVShow_Genres)

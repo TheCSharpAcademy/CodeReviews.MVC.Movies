@@ -20,12 +20,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="tvShow.ShowStarted" class="control-label"></label>
-                <input asp-for="tvShow.ShowStarted" class="form-control" />
+                <input asp-for="tvShow.ShowStarted" asp-format="{0:yyyy-MM-dd}" class="form-control" />
                 <span asp-validation-for="tvShow.ShowStarted" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="tvShow.ShowCompleted" class="control-label"></label>
-                <input asp-for="tvShow.ShowCompleted" class="form-control" />
+                <input asp-for="tvShow.ShowCompleted" asp-format="{0:yyyy-MM-dd}" class="form-control" />
                 <span asp-validation-for="tvShow.ShowCompleted" class="text-danger"></span>
             </div>
             <div class="form-group">

@@ -61,12 +61,9 @@
             TV Show Certification Rating
         </dt>
         <dd class="col-sm-10">
-            @if (Model.TVShow_Ratings != null)
+            @if (Model.TVShow_Rating != null)
             {
-                @foreach (var rating in Model.TVShow_Ratings)
-                {
-                    <p>@rating.Rating.Certification</p>
-                }
+                    <p>@Model.TVShow_Rating.Rating.Certification</p>
             }
         </dd>
     </dl>

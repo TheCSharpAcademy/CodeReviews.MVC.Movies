@@ -1,4 +1,6 @@
-﻿namespace MVC.TVShows.Forser.Repositories
+﻿using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+
+namespace MVC.TVShows.Forser.Repositories
 {
     public class TVShowRepository : GenericRepository<TVShow>, ITVShowRepository
     {
@@ -15,7 +17,7 @@
                 tvShow = _context.TVShows
                 .Include(g => g.TVShow_Genres)
                 .ThenInclude(g => g.Genre)
-                .Include(r => r.TVShow_Ratings)
+                .Include(r => r.TVShow_Rating)
                 .ThenInclude(r => r.Rating)
                 .OrderBy(i => i.Id)
                 .Where(w => w.Id == id)
@@ -58,15 +60,13 @@
         }
         public void AssignRatingToTVShow(TVShow tvShow, int ratingId)
         {
-            List<TVShow_Rating> tvShow_Rating = new List<TVShow_Rating>();
-
-            tvShow_Rating.Add(new TVShow_Rating
+            TVShow_Rating tvShow_Rating = new TVShow_Rating()
             {
                 Rating_Id = Convert.ToInt32(ratingId),
                 TVShow_Id = tvShow.Id
-            });
+            };
 
-            tvShow.TVShow_Ratings = tvShow_Rating;
+            tvShow.TVShow_Rating = tvShow_Rating;
         }
         private static List<Genre> GenerateGenreList(List<SelectListItem> selectedGenres)
         {
@@ -90,7 +90,6 @@
         public async Task UpdateTvShow(TVShow tvShow, List<SelectListItem>? allGenres, int ratingId)
         {
             AssignGenresToTVShow(tvShow, allGenres);
-            AssignRatingToTVShow(tvShow, ratingId);
 
             var existingGenreRecords = await _context.TVShowGenres.ToListAsync();
             var existingRatingRecords = await _context.TVShowRatings.ToListAsync();
@@ -116,30 +115,33 @@
                 }
             }
 
-            foreach (var update in tvShow.TVShow_Ratings)
-            {
-                if (update != null)
-                {
-                    var existingRecord = existingRatingRecords.FirstOrDefault(sg => sg.TVShow_Id == update.TVShow_Id && sg.Rating_Id != ratingId);
+            tvShow.TVShow_Genres = existingGenreRecords;
 
+            if (existingRatingRecords.Select(s => s.Rating_Id).FirstOrDefault() != ratingId) 
+            {
+                if (tvShow.TVShow_Rating == null)
+                {
+                    tvShow.TVShow_Rating = new TVShow_Rating() { TVShow_Id = tvShow.Id, Rating_Id = ratingId };
+                }
+                else
+                {
+                    var existingRecord = existingRatingRecords.FirstOrDefault(sg => sg.TVShow_Id == tvShow.Id && sg.Rating_Id != ratingId);
                     if (existingRecord != null)
                     {
-
                         if (existingRecord.Rating_Id != ratingId)
                         {
                             existingRatingRecords.Remove(existingRecord);
+                            AssignRatingToTVShow(tvShow, ratingId);
                         }
-                    }
-                    else
-                    {
-                        var newRecord = new TVShow_Rating() { TVShow_Id = update.TVShow_Id, Rating_Id = ratingId };
-                        existingRatingRecords.Add(newRecord);
+                        else
+                        {
+                            var newRecord = new TVShow_Rating() { TVShow_Id = tvShow.Id, Rating_Id = ratingId };
+                            existingRatingRecords.Add(newRecord);
+                            tvShow.TVShow_Rating = existingRatingRecords.FirstOrDefault();
+                        }
                     }
                 }
             }
-
-            tvShow.TVShow_Genres = existingGenreRecords;
-            tvShow.TVShow_Ratings = existingRatingRecords;
 
             await _context.SaveChangesAsync();
         }

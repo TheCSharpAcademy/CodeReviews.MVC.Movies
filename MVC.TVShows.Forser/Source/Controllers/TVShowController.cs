@@ -49,8 +49,7 @@ namespace MVC.TVShows.Forser.Controllers
             {
                 _unitOfWork.TVShows.AssignGenresToTVShow(tvShow, allGenres);
 
-                var tvShow_Rating = new TVShow_Rating { TVShow_Id = tvShow.Id, Rating_Id = Rating };
-                tvShow.TVShow_Ratings = new List<TVShow_Rating> { tvShow_Rating };
+                tvShow.TVShow_Rating = new TVShow_Rating { TVShow_Id = tvShow.Id, Rating_Id = Rating };
 
                 await _unitOfWork.TVShows.Create(tvShow);
                 await _unitOfWork.TVShows.Save();
@@ -80,11 +79,14 @@ namespace MVC.TVShows.Forser.Controllers
 
             var selectedRating = _unitOfWork.Ratings.GetSelectedRating(viewModel.tvShow.Id);
 
-            foreach (var rating in viewModel.allRatings)
+            if (selectedRating != null)
             {
-                if (selectedRating.Id == Convert.ToInt32(rating.Value))
+                foreach (var rating in viewModel.allRatings)
                 {
-                    rating.Selected = true;
+                    if (selectedRating.Id == Convert.ToInt32(rating.Value))
+                    {
+                        rating.Selected = true;
+                    }
                 }
             }
         }

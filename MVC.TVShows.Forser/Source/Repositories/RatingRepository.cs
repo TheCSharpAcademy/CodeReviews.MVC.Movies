@@ -16,7 +16,7 @@
                 selectedRating = _context.TVShowRatings
                     .Where(r => r.TVShow_Id == id)
                     .Select(tg => tg.Rating)
-                    .First();
+                    .FirstOrDefault();
             }
             catch (Exception ex)
             {
