@@ -113,7 +113,7 @@
             Rating rating = await _unitOfWork.Ratings.GetById(id);
             if (rating != null)
             {
-                await _unitOfWork.Ratings.Delete(rating);
+                await _unitOfWork.Ratings.DeleteRating(rating);
             }
             await _unitOfWork.Ratings.Save();
             return RedirectToAction(nameof(Index));

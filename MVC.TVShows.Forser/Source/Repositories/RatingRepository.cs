@@ -1,4 +1,6 @@
-﻿namespace MVC.TVShows.Forser.Repositories
+﻿using MVC.TVShows.Forser.Models;
+
+namespace MVC.TVShows.Forser.Repositories
 {
     public class RatingRepository : GenericRepository<Rating>, IRatingRepository
     {
@@ -24,6 +26,19 @@
             }
 
             return selectedRating;
+        }
+
+        public async Task DeleteRating(Rating rating)
+        {
+            try
+            {
+                Rating exists = await _context.Ratings.FindAsync(rating.Id);
+                _context.Remove(exists);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

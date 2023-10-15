@@ -124,7 +124,7 @@
             Genre genre = await _unitOfWork.Genres.GetById(id);
             if (genre != null)
             {
-                await _unitOfWork.Genres.Delete(genre);
+                await _unitOfWork.Genres.DeleteGenre(genre);
             }
 
             await _unitOfWork.Genres.Save();

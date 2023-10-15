@@ -1,4 +1,6 @@
-﻿namespace MVC.TVShows.Forser.Repositories
+﻿using MVC.TVShows.Forser.Models;
+
+namespace MVC.TVShows.Forser.Repositories
 {
     public class ShowGenreRepository : GenericRepository<Genre>, IShowGenreRepository
     {
@@ -22,6 +24,18 @@
                 throw new Exception(ex.Message);
             }
             return selectedGenres;
+        }
+        public async Task DeleteGenre(Genre genre)
+        {
+            try
+            {
+                Genre exists = await _context.Genres.FindAsync(genre.Id);
+                _context.Remove(exists);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }
