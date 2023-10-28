@@ -98,6 +98,25 @@ public class MoviesController : Controller
         return RedirectToAction(nameof(Index));
     }
 
+    // GET: Movies/Add
+    public IActionResult Add()
+    {
+        return View();
+    }
+
+    // POST: Movies/Add
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Add([Bind("Id,Title,ReleaseDate,Genre,Price,Rating")] Movie movie)
+    {
+        if (!ModelState.IsValid) return View(movie);
+
+        _context.Add(movie);
+        await _context.SaveChangesAsync();
+
+        return RedirectToAction(nameof(Index));
+    }
+
     private bool MovieExists(long id)
     {
         return (_context.Movies?.Any(movie => movie.Id == id)).GetValueOrDefault();
