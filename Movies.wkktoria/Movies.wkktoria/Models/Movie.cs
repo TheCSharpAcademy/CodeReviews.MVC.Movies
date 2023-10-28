@@ -12,7 +12,7 @@ public class Movie
     public string? Title { get; set; }
 
     [Display(Name = "Release Date")]
-    [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+    [DisplayFormat(DataFormatString = "{0:dd MMM yyyy}", ApplyFormatInEditMode = true)]
     [DataType(DataType.Date)]
     public DateTime ReleaseDate { get; set; }
 

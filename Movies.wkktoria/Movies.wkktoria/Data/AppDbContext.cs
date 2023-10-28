@@ -9,5 +9,5 @@ public class AppDbContext : DbContext
     {
     }
 
-    public DbSet<Movie> Movies { get; set; } = default!;
+    public DbSet<Movie>? Movies { get; set; } = default!;
 }
