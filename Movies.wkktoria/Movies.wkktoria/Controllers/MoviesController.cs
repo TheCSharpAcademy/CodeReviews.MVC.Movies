@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Movies.wkktoria.Data;
 using Movies.wkktoria.Models;
@@ -15,11 +16,21 @@ public class MoviesController : Controller
     }
 
     // GET: Movies
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(string searchString, string movieGenre)
     {
+        var genreQuery = from m in _context.Movies orderby m.Genre select m.Genre;
         var movies = from m in _context.Movies select m;
 
-        return View(movies);
+        if (!string.IsNullOrEmpty(searchString)) movies = movies.Where(m => m.Title!.Contains(searchString));
+        if (!string.IsNullOrEmpty(movieGenre)) movies = movies.Where(m => m.Genre == movieGenre);
+
+        var movieGenreVm = new MovieGenreViewModel
+        {
+            Genres = new SelectList(await genreQuery.Distinct().ToListAsync()),
+            Movies = await movies.ToListAsync()
+        };
+
+        return View(movieGenreVm);
     }
 
     // GET: Movies/Details/5
