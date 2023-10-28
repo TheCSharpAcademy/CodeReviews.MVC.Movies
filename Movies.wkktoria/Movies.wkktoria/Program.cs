@@ -32,6 +32,6 @@ app.UseRouting();
 
 app.MapControllerRoute(
     "default",
-    "{controller=Movies}/{action=Index}/{id?}");
+    "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

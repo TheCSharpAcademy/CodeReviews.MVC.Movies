@@ -1,7 +1,7 @@
-@model Movie
+@model Album
 
 @{
-    ViewData["Title"] = "Delete Movie";
+    ViewData["Title"] = "Delete Album";
     Layout = "_Layout";
 }
 
@@ -11,10 +11,22 @@
 <div>
     <dl class="row">
         <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CoverPath)
+        </dt>
+        <dd class="col-sm-10">
+            <img src="@Url.Content(Model.CoverPath)" class="img-thumbnail img-thumbnail" alt="Cover of album"/>
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Title)
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Artist)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Artist)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.ReleaseDate)
@@ -27,18 +39,6 @@
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Genre)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Rating)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Rating)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Price)
         </dd>
     </dl>
     <form asp-action="Delete">
