@@ -127,7 +127,6 @@ public class MoviesController : Controller
 
         return RedirectToAction(nameof(Index));
     }
-
     private bool MovieExists(long id)
     {
         return (_context.Movies?.Any(movie => movie.Id == id)).GetValueOrDefault();
