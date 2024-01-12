@@ -8,10 +8,10 @@ namespace MVC.Movies.K_MYR;
 
 public class MoviesController : Controller
 {
-    private readonly MovieContext _context;
+    private readonly DatabaseContext _context;
     private readonly ILogger<MoviesController> _logger;
 
-    public MoviesController(ILogger<MoviesController> logger, MovieContext context )
+    public MoviesController(ILogger<MoviesController> logger, DatabaseContext context )
     {        
         _logger = logger;        
         _context = context;
@@ -23,12 +23,12 @@ public class MoviesController : Controller
         var movies = _context.Movies.Select(m => m);
 
         if(!string.IsNullOrEmpty(searchString))
-            movies = movies.Where(s => s.Title.Contains(searchString));
+            movies = movies.Where(s => s.Title!.Contains(searchString));
 
         if (!string.IsNullOrEmpty(movieGenre))    
             movies = movies.Where(x => x.Genre == movieGenre);   
 
-        MovieGenreViewModel movieGenreVM = new()
+        MovieListViewModel movieGenreVM = new()
         {
             Genres = new SelectList(await genres.ToListAsync()),
             Movies = await movies.ToListAsync()
@@ -102,12 +102,7 @@ public class MoviesController : Controller
         await _context.SaveChangesAsync();
 
         return RedirectToAction(nameof(Index));    
-    }
-  
-    public IActionResult Create()
-    {
-        return View();
-    }
+    } 
 
     [HttpPost]
     [ValidateAntiForgeryToken]        

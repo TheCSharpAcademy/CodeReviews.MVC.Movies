@@ -1,69 +1,100 @@
-@model MVC.Movies.K_MYR.Models.MovieGenreViewModel
+@model MVC.Movies.K_MYR.Models.MovieListViewModel
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<div class="container text-white">
+    <div class="d-flex justify-content-between mb-3">
+        <h1 class="red">Movies</h1>
+        <button class="addButton bg-dark my-2" type="button" data-bs-toggle="modal" data-bs-target="#addMovie">
+            Add New
+        </button>
+    </div>
+    <form asp-controller="Movies" asp-action="Index" method="get">
+        <p>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<form asp-controller="Movies" asp-action="Index" method="get">
-    <p>
+            <select asp-for="MovieGenre" asp-items="Model.Genres">
+                <option value="">All</option>
+            </select>
 
-        <select asp-for="MovieGenre" asp-items="Model.Genres">
-            <option value="">All</option>
-        </select>
+            Title: <input id="movies-search" type="text" asp-for="SearchString" />
+            <input type="submit" value="Filter" />
+        </p>
+    </form>
 
-        Title: <input type="text" asp-for="SearchString" />
-        <input type="submit" value="Filter" />
-    </p>
-</form>
+    <div id="filterAccordion" class="accordion-flush mb-4">
+        <div class="accordion-item">
+            <h2 id="filterHeader" class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFilters" aria-expanded="true" aria-controls="collapseFilters">
+                    Filters
+                </button>
+            </h2>
+            <div id="collapseFilters" class="accordion-collapse collapse show" aria-labelledby="filterHeader" data-bs-parent="#filterAccordion">
+                <div class="accordion-body red">
+                    Here i will put some filters!
+                </div>
+            </div>
+        </div>
+    </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Movies![0].Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Movies![0].ReleaseDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Movies![0].Genre)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Movies![0].Price)
-            </th>
-            th>
-                @Html.DisplayNameFor(model => model.Movies![0].Rating)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Movies!)
-        {
+    <table class="table text-white table-hover table-borderless p-2" id="movies-table">
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ReleaseDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Genre)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Price)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
+                <th>
+                    @Html.DisplayNameFor(model => model.NewMovie.Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NewMovie.ReleaseDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NewMovie.Genre)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NewMovie.Price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NewMovie.Rating)
+                </th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Movies)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReleaseDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Genre)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Rating)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@await Html.PartialAsync("_Modals", new Movie());
+
+@section Scripts {
+    <script src="~/js/MoviesIndex.js"></script>
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

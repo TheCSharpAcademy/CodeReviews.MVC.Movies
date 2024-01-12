@@ -9,7 +9,18 @@ html {
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem white;
+    outline: none;
+}
+
+.formButton {
+    background-color: #eb0e0e;
+    color: white;
+}
+
+.formButton:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.20rem black;
+    outline: none;
 }
 
 html {
@@ -17,6 +28,51 @@ html {
   min-height: 100%;
 }
 
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(235, 14, 14,1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='4' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    background-color: #383838;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover, a:focus {
+    color: white !important;
+}
+
+.addButton {
+    color: #eb0e0e;
+    border: none
+}
+
+.addButton:hover, .addButton:focus {
+    color: white;   
+}
+
+#movies-table {
+    border: groove;
+    border-radius: 12px 12px 12px 12px;
+    border-style: groove;
+    border-color: #eb0e0e;
+    border-top: none;
+    border-bottom: none;
+}
+
+.table-hover tbody tr:hover {
+    color: #eb0e0e;
+    background-color: rgba(0, 0, 0, 0.075);
+}
+
+.page-item.active .page-link {
+    background-color: #eb0e0e;
+    border-color: #eb0e0e;
+}
+
+.red {
+    color: #eb0e0e;
 }

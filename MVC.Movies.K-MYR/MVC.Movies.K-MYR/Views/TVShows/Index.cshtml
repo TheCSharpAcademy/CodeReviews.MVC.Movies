@@ -1,0 +1,14 @@
+﻿@model MVC.Movies.K_MYR.Models.TVShowsFilterModel
+
+@{
+    ViewData["Title"] = "TV Shows";
+}
+
+<h2>Index</h2>
+
+@foreach(var show in Model.TVShows)
+{
+    <h5>@Html.DisplayFor(title => show.Title)</h5>
+}
+
+

@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MVC.Movies.K_MYR.Models;
 
@@ -11,13 +10,13 @@ public class Movie
     public string? Title { get; set; }
     [Display(Name="Release Date")]
     [DataType(DataType.Date)]
+    [Required]
     public DateTime ReleaseDate { get; set; }
     [RegularExpression(@"^[A-Z]+[a-zA-Z\s]*$")]
     [Required]
     [StringLength(30)]
     public string? Genre { get; set; }
-    [DataType(DataType.Currency)]
-    [Column(TypeName = "decimal(18,2)")]
+    [DataType(DataType.Currency)]      
     [Range(1,100)]
     public decimal Price { get; set; }
     [RegularExpression(@"^[A-Z]+[a-zA-Z0-9""'\s-]*$")]

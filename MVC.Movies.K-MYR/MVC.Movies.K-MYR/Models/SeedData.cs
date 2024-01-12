@@ -7,7 +7,7 @@ public static class SeedData
 {
     public static void Initialize(IServiceProvider serviceProvider)
     {
-        using var context = new MovieContext(serviceProvider.GetRequiredService<DbContextOptions<MovieContext>>());
+        using var context = new DatabaseContext(serviceProvider.GetRequiredService<DbContextOptions<DatabaseContext>>());
         if (context.Movies.Any())
             return;
 
@@ -45,6 +45,16 @@ public static class SeedData
                 Rating = "R"
             }
         );
+
+        context.TVShows.AddRange(
+            new TVShow
+            {
+                Title = "Two and a half man"
+            },
+            new TVShow
+            {
+                Title = "How i met your mother"
+            });
         context.SaveChanges();
     }
 }
