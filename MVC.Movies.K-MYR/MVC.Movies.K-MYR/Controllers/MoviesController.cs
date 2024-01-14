@@ -52,7 +52,7 @@ public class MoviesController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id, [Bind("Id,Title,ReleaseDate,Genre,Price,Rating")] Movie movie)
+    public async Task<IActionResult> Edit(int id, [Bind("Id, Title,ReleaseDate,Genre,Price,Rating")] Movie movie)
     {
         if(id != movie.Id)
             return NotFound();
@@ -106,7 +106,7 @@ public class MoviesController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]        
-    public async Task<IActionResult> Create([Bind("Id,Title,Genre,ReleaseDate,Price,Rating")] Movie movie)
+    public async Task<IActionResult> Create([Bind("Title,Genre,ReleaseDate,Price,Rating")] Movie movie)
     {
         if (ModelState.IsValid)
         {
@@ -118,7 +118,7 @@ public class MoviesController : Controller
     }
 
     public async Task<ActionResult> Details(int? id)
-    {
+    {        
         if (id is null)
             return NotFound();
 
