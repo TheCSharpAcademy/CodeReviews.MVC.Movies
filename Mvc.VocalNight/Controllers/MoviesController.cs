@@ -20,20 +20,17 @@ namespace MovieMvc.Controllers
         }
 
         // GET: Movies
-        public async Task<IActionResult> Index(string searchString, string movieGenre)
+        public async Task<IActionResult> Index( string movieGenre, string searchString )
         {
-            if (_context.Movie == null)
-            {
-                return Problem("Entity set 'MvcMovieContext.Movie' is null.");
-            }
-
+            // Use LINQ to get list of genres.
             IQueryable<string> genreQuery = from m in _context.Movie
                                             orderby m.Genre
                                             select m.Genre;
 
-            var movies = from m in _context.Movie select m;
+            var movies = from m in _context.Movie
+                         select m;
 
-            if (!String.IsNullOrEmpty(searchString))
+            if (!string.IsNullOrEmpty(searchString))
             {
                 movies = movies.Where(s => s.Title!.Contains(searchString));
             }
@@ -48,7 +45,6 @@ namespace MovieMvc.Controllers
                 Genres = new SelectList(await genreQuery.Distinct().ToListAsync()),
                 Movies = await movies.ToListAsync()
             };
-
 
             return View(movieGenreVM);
         }
