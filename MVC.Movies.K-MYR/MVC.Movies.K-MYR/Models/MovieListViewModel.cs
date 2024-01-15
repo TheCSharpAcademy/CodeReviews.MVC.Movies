@@ -8,6 +8,6 @@ public class MovieListViewModel
     public SelectList? Genres { get; set; }
     public string? MovieGenre { get; set; }
     public string? SearchString { get; set; }
-    public Movie NewMovie { get; set; } = new Movie();
+    public Movie Movie { get; set; } = new Movie();
 }
     

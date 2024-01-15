@@ -1,4 +1,5 @@
 @model MVC.Movies.K_MYR.Models.MovieListViewModel
+@using System.Globalization;
 
 @{
     ViewData["Title"] = "Index";
@@ -25,15 +26,31 @@
             <div id="collapseFilters" class="accordion-collapse collapse" aria-labelledby="filterHeader" data-bs-parent="#filterAccordion">
                 <div class="accordion-body red">
                     <form asp-controller="Movies" asp-action="Index" method="get">
-                        <p>
-
-                            <select asp-for="MovieGenre" asp-items="Model.Genres">
+                        <div class="form-group mb-1">
+                            <label id="genre-label" class="me-2">Genre</label>
+                            <select asp-for="MovieGenre" asp-items="Model.Genres" aria-labelledby="genre-label">
                                 <option value="">All</option>
-                            </select>
-
-                            Title: <input id="movies-search" type="text" asp-for="SearchString" />
-                            <input type="submit" value="Filter" />
-                        </p>
+                            </select>                            
+                        </div>      
+                        <div class="text-center">
+                            <label id="releaseDate-label" class="mt-2">Release Date</label>
+                            <div class="d-flex">
+                                <input id="yearFrom" type="text" class="range-input h-50 me-4" value="" data-min="@Model.Movies.Min(m => m.ReleaseDate.Year)"/>
+                                <input type="text" class="range-slider" id="yearRange" value="" />
+                                <input id="yearTo" type="text" class="range-input h-50 ms-4" value="" data-max="@Model.Movies.Max(m => m.ReleaseDate.Year)" />
+                            </div>
+                        </div>
+                        <div class="text-center">  
+                            <label id="price-label" class="mt-1">Price (@CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol)</label>
+                            <div class="d-flex">
+                                <input id="priceFrom" type="text" class="range-input h-50 me-4" value="" data-min="@Model.Movies.Min(m => m.Price).ToString(new CultureInfo("en-US"))" />
+                                <input type="text" class="range-slider" id="priceRange" value="" />
+                                <input id="priceTo" type="text" class="range-input h-50 ms-4" value="" data-max="@Model.Movies.Max(m => m.Price).ToString(new CultureInfo("en-US"))" />
+                            </div>                            
+                        </div>
+                        <div class="text-center mt-2">
+                            <input class="filter-btn" type="submit" value="Filter" />
+                        </div>
                     </form>
                 </div>
             </div>
@@ -41,23 +58,24 @@
     </div>
 
     <table class="table text-white table-hover table-borderless w-100 px-2" id="movies-table">
+
         <thead>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.NewMovie.Title)
+                    @Html.DisplayNameFor(model => model.Movie.Title)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.NewMovie.ReleaseDate)
+                    @Html.DisplayNameFor(model => model.Movie.ReleaseDate)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.NewMovie.Genre)
+                    @Html.DisplayNameFor(model => model.Movie.Genre)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.NewMovie.Price)
+                    @Html.DisplayNameFor(model => model.Movie.Price)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.NewMovie.Rating)
-                </th>                
+                    @Html.DisplayNameFor(model => model.Movie.Rating)
+                </th>
                 <th class="px-0"></th>
                 <th class="px-0"></th>
             </tr>
@@ -99,7 +117,7 @@
     </table>
 </div>
 
-@await Html.PartialAsync("_Modals", new Movie())
+@await Html.PartialAsync("_Modals", Model.Movie)
 
 @section Scripts {
     <script src="~/js/MoviesIndex.js"></script>

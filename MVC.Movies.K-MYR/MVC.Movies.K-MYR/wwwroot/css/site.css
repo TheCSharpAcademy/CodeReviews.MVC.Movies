@@ -81,6 +81,42 @@ a:hover, a:focus {
     overflow: hidden;
 }
 
+.accordion-body label {
+    font-weight: bold;
+}
+
+.range-input {
+    position: relative;
+    top: 20px;
+    width: 45px;
+}
+
+.irs {
+    flex-grow: 1;
+}
+
+.irs-from, .irs-to, .irs-single {
+    background-color: #eb0e0e !important;
+    border-radius: 10px;
+}
+
+.irs-bar {
+    background-color: #eb0e0e !important;
+}
+
+.irs-handle {
+    border: 3px solid #eb0e0e !important;
+}
+
+.filter-btn {
+    border-radius: 8px;
+    border: none;
+    background-color: #eb0e0e;
+    color: white;
+    padding: 8px 15px 8px 15px;
+    font-weight: bold;
+}
+
 .accordion-button::after {
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23eb0e0e'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e") !important;
   }

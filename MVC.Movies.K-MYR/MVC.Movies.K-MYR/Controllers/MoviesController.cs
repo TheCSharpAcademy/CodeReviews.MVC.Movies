@@ -3,6 +3,7 @@ using MVC.Movies.K_MYR.Data;
 using Microsoft.EntityFrameworkCore;
 using MVC.Movies.K_MYR.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Linq;
 
 namespace MVC.Movies.K_MYR;
 
@@ -19,7 +20,7 @@ public class MoviesController : Controller
 
     public async Task<IActionResult> Index(string searchString, string movieGenre)
     {
-        var genres = _context.Movies.OrderBy(m => m.Genre).Select(m => m.Genre).Distinct();
+        var genres = _context.Movies.Select(m => m.Genre).Distinct();
         var movies = _context.Movies.Select(m => m);
 
         if(!string.IsNullOrEmpty(searchString))
@@ -30,25 +31,12 @@ public class MoviesController : Controller
 
         MovieListViewModel movieGenreVM = new()
         {
-            Genres = new SelectList(await genres.ToListAsync()),
+            Genres = new SelectList((await genres.ToListAsync()).Order()),
             Movies = await movies.ToListAsync()
         };
 
         return View(movieGenreVM);
     }   
-
-    public async Task<IActionResult> Edit(int? id)
-    {
-        if (id is null)
-            return NotFound();
-        
-        var movie = await _context.Movies.FindAsync(id);
-
-        if (movie is null)
-            return NotFound();
-
-        return View(movie);
-    }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
@@ -73,21 +61,8 @@ public class MoviesController : Controller
             }          
             return RedirectToAction(nameof(Index));
         }
-        return View(movie);
-    }
-
-    public async Task<IActionResult> Delete(int? id)
-    {
-        if (id is null)
-            return NotFound();
-        
-        var movie = await _context.Movies.FindAsync(id);
-
-        if (movie is null)
-            return NotFound();
-
-        return View(movie);
-    }
+        return BadRequest();
+    }    
 
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
@@ -114,7 +89,7 @@ public class MoviesController : Controller
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        return View(movie);
+        return BadRequest();
     }
 
     public async Task<ActionResult> Details(int? id)
