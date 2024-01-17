@@ -17,11 +17,10 @@ public class Movie
     [StringLength(30)]
     public string? Genre { get; set; }
     [DataType(DataType.Currency)]      
-    [Range(1,100)]
+    [Range(1,999)]
     public decimal Price { get; set; }
     [RegularExpression(@"^[A-Z]+[a-zA-Z0-9""'\s-]*$")]
     [Required]
     [StringLength(5)]
     public string? Rating { get; set; }
-
 }

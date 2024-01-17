@@ -1,11 +1,10 @@
-﻿
-const $yearRange = $("#yearRange");
+﻿const $yearRange = $("#yearRange");
 const $inputYearFrom = $("#yearFrom");
 const $inputYearTo = $("#yearTo");
 const yearMin = $inputYearFrom.data('min');
 const yearMax = $inputYearTo.data('max');
-var yearFrom = yearMin;
-var yearTo = yearMax;
+var yearFrom;
+var yearTo;
 
 const $priceRange = $("#priceRange");
 const $inputPriceFrom = $("#priceFrom");
@@ -15,8 +14,13 @@ const priceMax = $inputPriceTo.data('max');
 var priceFrom = priceMin;
 var priceTo = priceMax;
 
-document.addEventListener('DOMContentLoaded', function () {    
-    $('#movies-table').DataTable({
+document.addEventListener('DOMContentLoaded', function () { 
+    setTimeout(function () {
+        $("#successMessage").alert("close");
+        $("#errorMessage").alert("close")
+    }, 3000);
+
+    var table = $('#movies-table').DataTable({
         info: false,
         dom: '<"pb-1" t<"d-flex justify-content-between mt-3"<"pt-1"l>p>>',
         columns: [
@@ -24,28 +28,24 @@ document.addEventListener('DOMContentLoaded', function () {
         ],
         scrollX: true,
         scrollCollapse: true     
-    });   
+    });  
 
-    $('#yearRange').ionRangeSlider({
+    $yearRange.ionRangeSlider({
         type: "integer",
         min: yearMin,
-        max: yearMax,
-        from: yearMin,
-        to: yearMax,
+        max: yearMax,        
         skin: "square",
         min_interval: 0,
         prettify_enabled: false,
-        hide_min_max: true, 
+        hide_min_max: true,
         onStart: updateYearInputs,
         onChange: updateYearInputs
     });  
-
-    $('#priceRange').ionRangeSlider({
+    
+    $priceRange.ionRangeSlider({
         type: "double",
         min: priceMin,
         max: priceMax,
-        from: priceMin,
-        to: priceMax,
         step: 0.01,
         skin: "square",
         min_interval: 0,
@@ -55,11 +55,11 @@ document.addEventListener('DOMContentLoaded', function () {
         onChange: updatePriceInputs
     }); 
 
-    $('#movies-search').on('keyup', function() {
+    $('#movies-search').on('keyup', function () {
         table.search(this.value).draw();
-    })
+    });
 
-    $inputYearFrom.on("input", function () {
+    $inputYearFrom.on("input", function () {        
         var val = this.value;
 
         if (val < yearMin) {
@@ -70,7 +70,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
         $yearRange.data("ionRangeSlider").update({
             from: val
-        });       
+        });  
+
+        yearFrom = val;
     });
 
     $inputYearTo.on("input", function () {
@@ -85,6 +87,8 @@ document.addEventListener('DOMContentLoaded', function () {
         $yearRange.data("ionRangeSlider").update({
             to: val
         });
+        
+        yearTo = val;
     }); 
 
     $inputPriceFrom.on("input", function () {
@@ -125,16 +129,17 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-
-function updateYearInputs(data) {    
+function updateYearInputs(data) {     
     $inputYearFrom.val(data.from);
     $inputYearTo.val(data.to);
-}
+    yearFrom = data.from;
+    yearTo = data.to;
+};
 
 function updatePriceInputs(data) {
     $inputPriceFrom.val(data.from);
     $inputPriceTo.val(data.to);
-}
+};
 
 function openUpdateMovieModal(id, title, releaseDate, genre, price, rating) {
     $("#updateMovie-label").text(`Edit "${title}"`);
@@ -145,11 +150,11 @@ function openUpdateMovieModal(id, title, releaseDate, genre, price, rating) {
     $("#updateMovie-input_price").val(price);
     $("#updateMovie-input_rating").val(rating);    
     $("#updateMovie").modal('show');
-}
+};
 
 function openDeleteMovieModal(id, title) {
     $('#deleteMovie-label').text(`Delete "${title}"`);
     $('#deleteConfirmationMessage').text(`Are you sure you want to delete "${title}" ?`);
     $('#deleteMovie-input_id').val(id);
     $('#deleteMovie').modal('show');
-}
+};

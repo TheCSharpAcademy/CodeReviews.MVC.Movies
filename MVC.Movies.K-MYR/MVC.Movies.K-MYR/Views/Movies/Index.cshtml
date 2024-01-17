@@ -11,51 +11,55 @@
         <button class="addButton bg-dark my-2" type="button" data-bs-toggle="modal" data-bs-target="#addMovie">
             Add New
         </button>
-    </div>  
-    <div class="d-flex mb-3">
-        <img class="me-3 search-icon" src="/img/search.svg" alt=""/>
-        <input class="form-control w-100 my-2" id="movies-search" type="text"/>
-    </div>     
-    <div id="filter-accordion" class="accordion-flush mb-4">
-        <div class="accordion-item bg-dark text-white">
-            <h2 id="filterHeader" class="accordion-header bg-dark text-white">
-                <button class="accordion-button bg-dark text-white collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFilters" aria-expanded="false" aria-controls="collapseFilters">
-                    <strong>Filters</strong>
-                </button>
-            </h2>
-            <div id="collapseFilters" class="accordion-collapse collapse" aria-labelledby="filterHeader" data-bs-parent="#filterAccordion">
-                <div class="accordion-body red">
-                    <form asp-controller="Movies" asp-action="Index" method="get">
+    </div>
+    <form asp-controller="Movies" asp-action="Index" method="get">
+        <div class="d-flex mb-3">
+            <img class="me-3 search-icon" src="/img/search.svg" alt=""/>
+            <input asp-for="SearchString" class="form-control w-100 my-2" id="movies-search" type="text"/>
+        </div>     
+        <div id="filter-accordion" class="accordion-flush mb-4">
+            <div class="accordion-item bg-dark text-white">
+                <h2 id="filterHeader" class="accordion-header bg-dark text-white">
+                    <button class="accordion-button bg-dark text-white collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFilters" aria-expanded="false" aria-controls="collapseFilters">
+                        <strong>Filters</strong>
+                    </button>
+                </h2>
+                <div id="collapseFilters" class="accordion-collapse collapse" aria-labelledby="filterHeader" data-bs-parent="#filterAccordion">
+                    <div class="accordion-body red">                    
                         <div class="form-group mb-1">
                             <label id="genre-label" class="me-2">Genre</label>
-                            <select asp-for="MovieGenre" asp-items="Model.Genres" aria-labelledby="genre-label">
+                            <select class="me-4" asp-for="MovieGenre" asp-items="Model.Genres" aria-labelledby="genre-label">
                                 <option value="">All</option>
-                            </select>                            
+                            </select>
+                            <label id="rating-label" class="me-2">Rating</label>
+                            <select asp-for="MovieRating" asp-items="Model.Ratings" aria-labelledby="genre-label">
+                                <option value="">All</option>
+                            </select>
                         </div>      
                         <div class="text-center">
                             <label id="releaseDate-label" class="mt-2">Release Date</label>
                             <div class="d-flex">
-                                <input id="yearFrom" type="text" class="range-input h-50 me-4" value="" data-min="@Model.Movies.Min(m => m.ReleaseDate.Year)"/>
-                                <input type="text" class="range-slider" id="yearRange" value="" />
-                                <input id="yearTo" type="text" class="range-input h-50 ms-4" value="" data-max="@Model.Movies.Max(m => m.ReleaseDate.Year)" />
+                                <input id="yearFrom" type="text" class="range-input h-50 me-4" value="" data-min="@Model.MinYear"/>
+                                <input asp-for="YearRange" type="text" class="range-slider" id="yearRange"/>
+                                <input id="yearTo" type="text" class="range-input h-50 ms-4" value="" data-max="@Model.MaxYear" />
                             </div>
                         </div>
                         <div class="text-center">  
                             <label id="price-label" class="mt-1">Price (@CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol)</label>
                             <div class="d-flex">
-                                <input id="priceFrom" type="text" class="range-input h-50 me-4" value="" data-min="@Model.Movies.Min(m => m.Price).ToString(new CultureInfo("en-US"))" />
-                                <input type="text" class="range-slider" id="priceRange" value="" />
-                                <input id="priceTo" type="text" class="range-input h-50 ms-4" value="" data-max="@Model.Movies.Max(m => m.Price).ToString(new CultureInfo("en-US"))" />
+                            <input id="priceFrom" type="text" class="range-input h-50 me-4" value="" data-min="@Model.MinPrice.ToString(new CultureInfo("en-US"))" />
+                            <input asp-for="PriceRange" type="text" class="range-slider" id="priceRange"/>
+                            <input id="priceTo" type="text" class="range-input h-50 ms-4" value="" data-max="@Model.MaxPrice.ToString(new CultureInfo("en-US"))" />
                             </div>                            
                         </div>
                         <div class="text-center mt-2">
                             <input class="filter-btn" type="submit" value="Filter" />
-                        </div>
-                    </form>
+                        </div>                    
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </form>
 
     <table class="table text-white table-hover table-borderless w-100 px-2" id="movies-table">
 
@@ -76,8 +80,8 @@
                 <th>
                     @Html.DisplayNameFor(model => model.Movie.Rating)
                 </th>
-                <th class="px-0"></th>
-                <th class="px-0"></th>
+                <th class="px-0 icon-header"></th>
+                <th class="px-0 icon-header"></th>
             </tr>
         </thead>
         <tbody>
