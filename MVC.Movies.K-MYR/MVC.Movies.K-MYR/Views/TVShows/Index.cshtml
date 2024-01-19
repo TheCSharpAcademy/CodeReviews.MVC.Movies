@@ -1,14 +1,138 @@
-﻿@model MVC.Movies.K_MYR.Models.TVShowsFilterModel
+@model MVC.Movies.K_MYR.Models.TVShowListViewModel;
+@using System.Globalization;
 
 @{
-    ViewData["Title"] = "TV Shows";
+    ViewData["Title"] = "Index - TV Shows";
 }
 
-<h2>Index</h2>
+<div class="container text-white">
+    <div class="d-flex justify-content-between mb-2">
+        <h1 class="red">TV Shows</h1>
+        <button class="addButton my-2" type="button" data-bs-toggle="modal" data-bs-target="#addTVShow">
+            Add New
+        </button>
+    </div>
+    <form asp-controller="TVShows" asp-action="Index" method="get">
+        <div class="d-flex mb-3">
+            <img class="me-3 search-icon" src="/img/search.svg" alt=""/>
+            <input asp-for="SearchString" class="form-control w-100 my-2" id="tvshows-search" type="text"/>
+        </div>     
+        <div id="filter-accordion" class="accordion-flush mb-4">
+            <div class="accordion-item bg-dark text-white">
+                <h2 id="filterHeader" class="accordion-header bg-dark text-white">
+                    <button id="accordion-btn" class="accordion-button bg-dark text-white collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFilters" aria-expanded="false" aria-controls="collapseFilters" tabindex="0">
+                        <strong>Filters</strong>
+                    </button>
+                </h2>
+                <div id="collapseFilters" class="accordion-collapse collapse" aria-labelledby="filterHeader" data-bs-parent="#filterAccordion">
+                    <div class="accordion-body red">                    
+                        <div class="form-group mb-1">
+                            <label id="genre-label" class="me-2" for="Genre">Genre</label>
+                            <select class="me-4" asp-for="ShowGenre" asp-items="Model.Genres" aria-labelledby="genre-label">
+                                <option value="">All</option>
+                            </select>
+                            <label id="rating-label" class="me-2" for="Rating">Rating</label>
+                            <select asp-for="ShowRating" asp-items="Model.Ratings" aria-labelledby="genre-label">
+                                <option value="">All</option>
+                            </select>
+                        </div>      
+                        <div class="text-center">
+                            <div id="releaseDate-label" class="mt-2">Release Date</div>
+                            <div class="d-flex">
+                                <input id="yearFrom" type="text" class="range-input h-50 me-4" value="" data-min="@Model.MinYear" aria-label="Year range start"/>
+                                <input asp-for="YearRange" type="text" class="range-slider" id="yearRange" aria-label="Year range slider" />
+                                <input id="yearTo" type="text" class="range-input h-50 ms-4" value="" data-max="@Model.MaxYear" aria-label="Year range end"/>
+                            </div>
+                        </div>
+                        <div class="text-center">  
+                            <div id="price-label" class="mt-1" for="priceRange">Price (@CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol)</div>
+                            <div class="d-flex">
+                                <input id="priceFrom" type="text" class="range-input h-50 me-4" value="" data-min="@Model.MinPrice.ToString(new CultureInfo("en-US"))" aria-label="Year range start"/>
+                                <input asp-for="PriceRange" type="text" class="range-slider" id="priceRange" aria-label="Year range slider text input"/>
+                                <input id="priceTo" type="text" class="range-input h-50 ms-4" value="" data-max="@Model.MaxPrice.ToString(new CultureInfo("en-US"))" aria-label="Year range end"/>
+                            </div>                            
+                        </div>
+                        <div class="text-center mt-2">
+                            <input class="filter-btn" type="submit" value="Filter" />
+                        </div>                    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
 
-@foreach(var show in Model.TVShows)
-{
-    <h5>@Html.DisplayFor(title => show.Title)</h5>
+    <table class="table text-white table-hover table-borderless w-100 px-2" id="tvshows-table">
+
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.TVShow.Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TVShow.Seasons)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TVShow.ReleaseDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TVShow.Genre)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TVShow.Price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TVShow.Rating)
+                </th>
+                <th class="px-0 icon-header"></th>
+                <th class="px-0 icon-header"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.TVShows)
+            {
+                <tr data-movie-id="@item.Id">
+                    <td class="text-truncate">
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td class="text-truncate">
+                        @Html.DisplayFor(modelItem => item.Seasons)
+                    </td>
+                    <td class="text-truncate">
+                        @Html.DisplayFor(modelItem => item.ReleaseDate)
+                    </td>
+                    <td class="text-truncate">
+                        @Html.DisplayFor(modelItem => item.Genre)
+                    </td>
+                    <td class="text-truncate">
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td class="text-truncate">
+                        @Html.DisplayFor(modelItem => item.Rating)
+                    </td>
+                    <td class="px-1">
+                        <button type="button" class="table-btn transparent-btn px-0" onclick="openUpdateTVShowModal(
+                            '@item.Id', '@item.Title', '@item.Seasons', '@item.ReleaseDate.ToString("yyyy-MM-dd")', '@item.Genre', '@Math.Round(item.Price, 2)', '@item.Rating')">
+                            <img class="updateIcon" src="/img/pencil_white.svg"/>
+                        </button>
+                    </td>
+                    <td class="px-1">
+                        <button type="button" class="table-btn transparent-btn px-0" onclick="openDeleteTVShowModal(
+                            '@item.Id', '@item.Title')">
+                            <img class="deleteIcon" src="/img/trash_white.svg"/>
+                        </button>
+                    </td>                   
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@await Html.PartialAsync("_Modals", Model.TVShow)
+
+@section Scripts {
+    <script src="~/js/TVShowsIndex.js"></script>
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
-
-

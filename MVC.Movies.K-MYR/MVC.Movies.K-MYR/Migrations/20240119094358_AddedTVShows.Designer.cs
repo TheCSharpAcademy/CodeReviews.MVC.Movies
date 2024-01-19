@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MVC.Movies.K_MYR.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20240117122945_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240119094358_AddedTVShows")]
+    partial class AddedTVShows
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -39,8 +39,8 @@ namespace MVC.Movies.K_MYR.Migrations
                         .HasColumnType("nvarchar(30)");
 
                     b.Property<decimal>("Price")
-                        .HasPrecision(10, 7)
-                        .HasColumnType("decimal(10,7)");
+                        .HasPrecision(7, 4)
+                        .HasColumnType("decimal(7,4)");
 
                     b.Property<string>("Rating")
                         .IsRequired()
@@ -68,8 +68,30 @@ namespace MVC.Movies.K_MYR.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Genre")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<decimal>("Price")
+                        .HasPrecision(7, 4)
+                        .HasColumnType("decimal(7,4)");
+
+                    b.Property<string>("Rating")
+                        .IsRequired()
+                        .HasMaxLength(5)
+                        .HasColumnType("nvarchar(5)");
+
+                    b.Property<DateTime>("ReleaseDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Seasons")
+                        .HasColumnType("int");
+
                     b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
 
                     b.HasKey("Id");
 

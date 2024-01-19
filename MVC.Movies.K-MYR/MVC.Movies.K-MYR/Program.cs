@@ -11,9 +11,8 @@ builder.Services.AddControllersWithViews(options =>
 
 builder.Services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
 
-var systemCulture = CultureInfo.CurrentCulture;
-CultureInfo.DefaultThreadCurrentCulture = systemCulture;
-CultureInfo.DefaultThreadCurrentUICulture = systemCulture;
+CultureInfo.DefaultThreadCurrentCulture = CultureInfo.CurrentCulture;
+CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.CurrentCulture;
 
 var app = builder.Build();
 

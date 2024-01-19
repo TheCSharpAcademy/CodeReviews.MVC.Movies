@@ -42,6 +42,16 @@ body {
     background-color: #383838;      
 }
 
+#releaseDate-label {
+    font-weight: bold;
+}
+
+#price-label {
+    font-weight: bold;
+}
+
+/* --- Index --- */
+
 .messageContainer {
     position: fixed;
     top: 10px;
@@ -60,7 +70,8 @@ a:hover, a:focus {
 
 .addButton {
     color: #eb0e0e;
-    border: none
+    border: none;
+    background-color: transparent;
 }
 
 .addButton:hover, .addButton:focus {
@@ -86,6 +97,12 @@ a:hover, a:focus {
     border-color: #eb0e0e !important;
     border-top: none !important;
     border-bottom: none !important;
+    overflow: hidden;
+}
+
+#filter-accordion:has(#accordion-btn:focus ) {
+    box-shadow: 0 0 0 2px #eb0e0e;
+    border-color: transparent !important;
     overflow: hidden;
 }
 
@@ -160,14 +177,86 @@ a:hover, a:focus {
     border: none;
 }
 
+.dataTables_length {
+    padding: 0 10px 0 10px;
+    border-left: 2px solid #eb0e0e;
+    border-radius: 10px;
+}
+
+.form-select {
+    background-color: transparent;
+    color: white;
+    border-color: transparent;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23eb0e0e' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e")
+}
+
+.form-select:hover {
+    box-shadow: 0 0 0 1px #eb0e0e !important;
+    background-color: transparent;
+    border-color: transparent;
+    cursor: pointer;
+}
+
+.form-select:focus {
+    box-shadow: 0 0 0 1px #eb0e0e !important;
+    background-color: transparent;
+    border-color: transparent;
+}
+
+.form-select option {
+    color: black !important;
+}
+
+.pagination {    
+    border-right: 2px solid #eb0e0e ;
+    border-radius: 10px;    
+}
+
 .page-link {
     padding: .250rem .75rem;
+    border: none;
+    background-color: transparent;
+    color: white;
+}
+
+.page-link:hover {
+    color: #eb0e0e !important;
+    background-color:transparent;
 }
 
 .page-item.active .page-link {
-    background-color: #eb0e0e;
-    border-color: #eb0e0e;
+    box-shadow: 0 0 0 1.5px #eb0e0e !important;
+    background-color: transparent;
 }
+
+.page-item.disabled .page-link {
+    background-color: transparent;
+    color: #6c757d !important;
+    pointer-events: none !important;
+}
+
+.page-link:focus {
+    box-shadow: 0 0 0 1px #eb0e0e !important; 
+    background-color: transparent;
+}
+
+/* --- Details --- */
+.action-btn {
+    background-color: transparent;
+    border: none;    
+}
+
+.back-btn {
+    color: #eb0e0e;
+    border: none;
+    background-color: transparent;
+}
+
+.back-btn:hover, .back-btn:focus {
+    color: white;
+}
+
+/* --- Colors--- */
 
 .red {
     color: #eb0e0e;

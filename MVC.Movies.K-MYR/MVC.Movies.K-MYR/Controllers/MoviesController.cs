@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MVC.Movies.K_MYR.Data;
 using MVC.Movies.K_MYR.Models;
+using System.Globalization;
 
 namespace MVC.Movies.K_MYR;
 
@@ -21,8 +22,8 @@ public class MoviesController : Controller
     {
         int minYear = _context.Movies.Min(m => m.ReleaseDate.Year);
         int maxYear = _context.Movies.Max(m => m.ReleaseDate.Year);
-        decimal minPrice = (decimal)_context.Movies.Min(m => (double)m.Price);
-        decimal maxPrice = (decimal)_context.Movies.Max(m => (double)m.Price);
+        decimal minPrice = _context.Movies.Min(m => m.Price);
+        decimal maxPrice = _context.Movies.Max(m => m.Price);
 
         var genres = _context.Movies.Select(m => m.Genre).Distinct().OrderBy(m => m);
         var ratings = _context.Movies.Select(m => m.Rating).Distinct().OrderBy(m => m);
@@ -54,12 +55,13 @@ public class MoviesController : Controller
 
             if (prices.Length == 2)
             {
-                if (decimal.TryParse(prices[0], out decimal priceFrom) && decimal.TryParse(prices[1], out decimal priceTo))
+                if (decimal.TryParse(prices[0], NumberStyles.Number, CultureInfo.InvariantCulture, out decimal priceFrom) && 
+                    decimal.TryParse(prices[1], NumberStyles.Number, CultureInfo.InvariantCulture, out decimal priceTo))
                     movies = movies.Where(m => m.Price >= priceFrom && m.Price <= priceTo);
             }
         }
 
-        MovieListViewModel movieGenreVM = new()
+        MovieListViewModel moviesModel = new()
         {
             Genres = new SelectList(await genres.ToListAsync()),
             Ratings = new SelectList(await ratings.ToListAsync()),
@@ -70,61 +72,7 @@ public class MoviesController : Controller
             MaxPrice = maxPrice
         };
 
-        return View(movieGenreVM);
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id, [Bind("Id, Title,ReleaseDate,Genre,Price,Rating")] Movie movie)
-    {
-        if (id != movie.Id)
-        {
-            TempData["errorMessage"] = "Bad request: Failed to update the movie.";
-            return RedirectToAction(nameof(Index));
-        }
-
-        if (ModelState.IsValid)
-        {
-            try
-            {
-                _context.Update(movie);
-                await _context.SaveChangesAsync();
-                TempData["successMessage"] = "Movie was updated successfully.";
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!MovieExists(movie.Id))
-                    TempData["errorMessage"] = "An error occured while attempting to update the movie: Movie not found.";
-                else
-                    TempData["errorMessage"] = "An error occured while attempting to update the movie.";
-            }            
-        }
-        else
-        {
-            TempData["errorMessage"] = "Bad request: Failed to update the movie.";
-        }
-
-        return RedirectToAction(nameof(Index));
-    }
-
-    [HttpPost, ActionName("Delete")]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(int id)
-    {
-        var movie = await _context.Movies.FindAsync(id);
-
-        if (movie is null)
-        {
-            TempData["errorMessage"] = "An error occured while attempting to update the movie: Movie not found.";
-            return RedirectToAction(nameof(Index));
-        }
-
-        _context.Movies.Remove(movie);
-        await _context.SaveChangesAsync();
-
-        TempData["successMessage"] = "Movie was deleted successfully.";
-
-        return RedirectToAction(nameof(Index));
+        return View(moviesModel);
     }
 
     [HttpPost]
@@ -145,11 +93,65 @@ public class MoviesController : Controller
         return RedirectToAction(nameof(Index));
     }
 
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(int id, [Bind("Id, Title,ReleaseDate,Genre,Price,Rating")] Movie movie)
+    {
+        if (id != movie.Id)
+        {
+            TempData["errorMessage"] = "Bad request: Failed to update the movie.";
+            return Redirect(Request.Headers.Referer.ToString());
+        }
+
+        if (ModelState.IsValid)
+        {
+            try
+            {
+                _context.Update(movie);
+                await _context.SaveChangesAsync();
+                TempData["successMessage"] = $"'{movie.Title}' was updated successfully.";
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (! await MovieExists(movie.Id))
+                    TempData["errorMessage"] = "An error occured while attempting to update the movie: Movie not found.";
+                else
+                    TempData["errorMessage"] = "An error occured while attempting to update the movie.";
+            }            
+        }
+        else
+        {
+            TempData["errorMessage"] = "Bad request: Failed to update the movie.";
+        }
+
+        return Redirect(Request.Headers.Referer.ToString());
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var movie = await _context.Movies.FindAsync(id);
+
+        if (movie is null)
+        {
+            TempData["errorMessage"] = "An error occured while attempting to update the movie: Movie not found.";
+            return Redirect(Request.Headers.Referer.ToString());
+        }
+
+        _context.Movies.Remove(movie);
+        await _context.SaveChangesAsync();
+
+        TempData["successMessage"] = $"'{movie.Title}' was deleted successfully.";
+
+        return Redirect(Request.Headers.Referer.ToString());
+    }
+
     public async Task<ActionResult> Details(int? id)
     {
         if (id is null)
         {
-            TempData["errorMessage"] = "Bad Request: Invalid request.";
+            TempData["errorMessage"] = "Bad Request: Missing Id.";
             return RedirectToAction(nameof(Index));
         }
 
@@ -164,5 +166,5 @@ public class MoviesController : Controller
         return View(movie);
     }
 
-    private bool MovieExists(int id) => _context.Movies.Find(id) is not null;
+    private async Task<bool> MovieExists(int id) => await _context.Movies.FindAsync(id) is not null;
 }

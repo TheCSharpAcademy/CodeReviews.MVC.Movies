@@ -1,65 +1,71 @@
-@model MVC.Movies.K_MYR.Models.Movie;
+ @model MVC.Movies.K_MYR.Models.TVShow;
 
 @{
-    ViewData["Title"] = "Details - Movies";
+    ViewData["Title"] = "Details - TV Shows";
 }
 
 <div class="d-flex">
     <h1 class="red mb-0">Details</h1>
-    <button type="button" class="action-btn ms-auto me-4 w-auto" onclick="openUpdateMovieModal(
-                            '@Model.Id', '@Model.Title', '@Model.ReleaseDate.ToString("yyyy-MM-dd")', '@Model.Genre', '@Math.Round(Model.Price, 2)', '@Model.Rating')">
+    <button type="button" class="table-btn transparent-btn ms-auto me-4 w-auto" onclick="openUpdateMovieModal(
+                            '@Model.Id','@Model.Seasons', '@Model.Title', '@Model.ReleaseDate.ToString("yyyy-MM-dd")', '@Model.Genre', '@Math.Round(Model.Price, 2)', '@Model.Rating')">
         <img class="h-75" src="/img/pencil_white.svg" />
     </button>
-    <button type="button" class="action-btn w-auto me-2" onclick="openDeleteMovieModal(
+    <button type="button" class="table-btn transparent-btn w-auto me-2" onclick="openDeleteMovieModal(
                             '@Model.Id', '@Model.Title')">
         <img class="h-75" src="/img/trash_white.svg" />
     </button>
 </div>
 
 
-<div>
+<div>    
     <hr />
     <dl class="row">
-        <dt class="col-2">
+        <dt class = "col-2">
             @Html.DisplayNameFor(model => model.Title)
         </dt>
-        <dd class="col-10">
+        <dd class = "col-10">
             @Html.DisplayFor(model => model.Title)
         </dd>
         <dt class="col-2">
+            @Html.DisplayNameFor(model => model.Seasons)
+        </dt>
+        <dd class="col-10">
+            @Html.DisplayFor(model => model.Seasons)
+        </dd>
+        <dt class = "col-2">
             @Html.DisplayNameFor(model => model.ReleaseDate)
         </dt>
-        <dd class="col-10">
+        <dd class = "col-10">
             @Html.DisplayFor(model => model.ReleaseDate)
         </dd>
-        <dt class="col-2">
+        <dt class = "col-2">
             @Html.DisplayNameFor(model => model.Genre)
         </dt>
-        <dd class="col-10">
+        <dd class = "col-10">
             @Html.DisplayFor(model => model.Genre)
         </dd>
-        <dt class="col-2">
+        <dt class = "col-2">
             @Html.DisplayNameFor(model => model.Price)
         </dt>
-        <dd class="col-10">
+        <dd class = "col-10">
             @Html.DisplayFor(model => model.Price)
         </dd>
-        <dt class="col-2">
+        <dt class = "col-2">
             @Html.DisplayNameFor(model => model.Rating)
         </dt>
-        <dd class="col-10">
+        <dd class = "col-10">
             @Html.DisplayFor(model => model.Rating)
         </dd>
     </dl>
 </div>
-<div class="d-flex">
+<div class="d-flex">   
     <a class="ms-auto back-btn" type="submit" asp-action="Index">Back to List</a>
 </div>
 
 @await Html.PartialAsync("_Modals", Model)
 
 @section Scripts {
-    <script src="~/js/MoviesDetails.js"></script>
+    <script src="~/js/TVShowsDetails.js"></script>
 
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");

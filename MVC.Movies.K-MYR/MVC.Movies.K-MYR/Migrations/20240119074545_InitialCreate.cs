@@ -20,7 +20,7 @@ namespace MVC.Movies.K_MYR.Migrations
                     Title = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
                     ReleaseDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Genre = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(10,7)", precision: 10, scale: 7, nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(7,4)", precision: 7, scale: 4, nullable: false),
                     Rating = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: false)
                 },
                 constraints: table =>
