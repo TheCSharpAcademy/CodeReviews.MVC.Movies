@@ -24,9 +24,8 @@ using (var scope = app.Services.CreateScope())
     SeedData.Initialize(db);
 }
 
-
 if (!app.Environment.IsDevelopment())
-{   
+{
     app.UseHsts();
 }
 

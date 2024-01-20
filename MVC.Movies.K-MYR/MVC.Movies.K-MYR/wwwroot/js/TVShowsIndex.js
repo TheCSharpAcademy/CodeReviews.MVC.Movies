@@ -127,6 +127,42 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     });
+
+    var accordionBtn = $(".accordion-btn");
+    var resetBtn = $("#reset-btn");
+    var target = document.getElementById("collapseFilters");
+
+    accordionBtn.on("click", function (event) {
+        if (event.target.matches("#filterCollapse-btn, .accordion-btn-caret, .accordion-btn")) {
+            if (target.classList.contains("show")) {
+                target.classList.remove("show");
+                accordionBtn.get(0).classList.add("collapsed");
+            } else {
+                target.classList.add("show");
+                accordionBtn.get(0).classList.remove("collapsed");
+            }
+        }
+    });
+
+    resetBtn.on("click", function () {
+        window.location.href = '/TVShows/Index';
+    });
+
+    $("#filterCollapse-btn").on("keyup", function (event) {
+        if (event.key == "Enter") {
+            var target = document.querySelector(accordionBtn.data("bsTarget"));
+
+            target.classList.add("test")
+
+            if (target.classList.contains("show")) {
+                target.classList.remove("show");
+                accordionBtn.get(0).classList.add("collapsed");
+            } else {
+                target.classList.add("show");
+                accordionBtn.get(0).classList.remove("collapsed");
+            }
+        }
+    });
 });
 
 function updateYearInputs(data) {

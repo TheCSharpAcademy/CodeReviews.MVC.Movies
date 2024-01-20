@@ -12,7 +12,7 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
     {
         modelBuilder.Entity<Models.Movie>()
             .Property(m => m.Price)
-            .HasPrecision(7,4);
+            .HasPrecision(7, 4);
 
         modelBuilder.Entity<Models.TVShow>()
             .Property(m => m.Price)

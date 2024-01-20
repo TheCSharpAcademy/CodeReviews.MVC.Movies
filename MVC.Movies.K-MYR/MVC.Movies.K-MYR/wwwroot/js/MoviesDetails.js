@@ -1,4 +1,11 @@
-﻿function openUpdateMovieModal(id, title, releaseDate, genre, price, rating) {
+﻿document.addEventListener('DOMContentLoaded', function () {
+    setTimeout(function () {
+        $("#successMessage").alert("close");
+        $("#errorMessage").alert("close")
+    }, 3000);
+});
+
+function openUpdateMovieModal(id, title, releaseDate, genre, price, rating) {
     $("#updateMovie-label").text(`Edit "${title}"`);
     $("#updateMovie-input_id").val(id);
     $("#updateMovie-input_title").val(title);

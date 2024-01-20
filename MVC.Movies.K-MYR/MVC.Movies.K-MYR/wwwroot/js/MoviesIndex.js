@@ -14,7 +14,7 @@ const priceMax = $inputPriceTo.data('max');
 var priceFrom = priceMin;
 var priceTo = priceMax;
 
-document.addEventListener('DOMContentLoaded', function () { 
+document.addEventListener('DOMContentLoaded', function () {
     setTimeout(function () {
         $("#successMessage").alert("close");
         $("#errorMessage").alert("close")
@@ -27,21 +27,21 @@ document.addEventListener('DOMContentLoaded', function () {
             null, null, null, null, null, { orderable: false }, { orderable: false }
         ],
         scrollX: true,
-        scrollCollapse: true     
-    });  
+        scrollCollapse: true
+    });
 
     $yearRange.ionRangeSlider({
         type: "integer",
         min: yearMin,
-        max: yearMax,        
+        max: yearMax,
         skin: "square",
         min_interval: 0,
         prettify_enabled: false,
         hide_min_max: true,
         onStart: updateYearInputs,
         onChange: updateYearInputs
-    });  
-    
+    });
+
     $priceRange.ionRangeSlider({
         type: "double",
         min: priceMin,
@@ -53,13 +53,13 @@ document.addEventListener('DOMContentLoaded', function () {
         hide_min_max: true,
         onStart: updatePriceInputs,
         onChange: updatePriceInputs
-    }); 
+    });
 
     $('#movies-search').on('keyup', function () {
         table.search(this.value).draw();
     });
 
-    $inputYearFrom.on("input", function () {        
+    $inputYearFrom.on("input", function () {
         var val = this.value;
 
         if (val < yearMin) {
@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         $yearRange.data("ionRangeSlider").update({
             from: val
-        });  
+        });
 
         yearFrom = val;
     });
@@ -87,12 +87,12 @@ document.addEventListener('DOMContentLoaded', function () {
         $yearRange.data("ionRangeSlider").update({
             to: val
         });
-        
+
         yearTo = val;
-    }); 
+    });
 
     $inputPriceFrom.on("input", function () {
-        var val = this.value;      
+        var val = this.value;
 
         if (val < priceMin) {
             val = priceMin;
@@ -106,18 +106,18 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     $inputPriceTo.on("input", function () {
-        var val = this.value;       
+        var val = this.value;
 
         if (val < priceFrom) {
             val = priceFrom;
         } else if (val > priceMax) {
             val = priceMax;
-        }       
+        }
 
         priceRange.data("ionRangeSlider").update({
             to: val
         });
-    }); 
+    });
 
     document.querySelectorAll('#movies-table tbody tr').forEach(function (row) {
         row.addEventListener('click', function (event) {
@@ -127,9 +127,45 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     });
+
+    var accordionBtn = $(".accordion-btn");
+    var resetBtn = $("#reset-btn");
+    var target = document.getElementById("collapseFilters");
+
+    accordionBtn.on("click", function (event) {
+        if (event.target.matches("#filterCollapse-btn, .accordion-btn-caret, .accordion-btn")) {
+            if (target.classList.contains("show")) {
+                target.classList.remove("show");
+                accordionBtn.get(0).classList.add("collapsed");
+            } else {
+                target.classList.add("show");
+                accordionBtn.get(0).classList.remove("collapsed");
+            }
+        }
+    });
+
+    resetBtn.on("click", function () {
+        window.location.href = '/TVShows/Index';
+    });
+
+    $("#filterCollapse-btn").on("keyup", function (event) {
+        if (event.key == "Enter") {
+            var target = document.querySelector(accordionBtn.data("bsTarget"));
+
+            target.classList.add("test")
+
+            if (target.classList.contains("show")) {
+                target.classList.remove("show");
+                accordionBtn.get(0).classList.add("collapsed");
+            } else {
+                target.classList.add("show");
+                accordionBtn.get(0).classList.remove("collapsed");
+            }
+        }
+    });
 });
 
-function updateYearInputs(data) {     
+function updateYearInputs(data) {
     $inputYearFrom.val(data.from);
     $inputYearTo.val(data.to);
     yearFrom = data.from;
@@ -148,7 +184,7 @@ function openUpdateMovieModal(id, title, releaseDate, genre, price, rating) {
     $("#updateMovie-input_release").val(releaseDate);
     $("#updateMovie-input_genre").val(genre);
     $("#updateMovie-input_price").val(price);
-    $("#updateMovie-input_rating").val(rating);    
+    $("#updateMovie-input_rating").val(rating);
     $("#updateMovie").modal('show');
 };
 

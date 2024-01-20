@@ -43,9 +43,8 @@ public static class SeedData
                 }
             );
         }
-        
 
-        if (!context.Movies.Any())
+        if (!context.TVShows.Any())
         {
             context.TVShows.AddRange(
             new TVShow
@@ -65,7 +64,7 @@ public static class SeedData
                 Genre = "Drama/History/War",
                 Price = 9.99M,
                 Rating = "TV-MA"
-            });            
+            });
         }
 
         context.SaveChanges();

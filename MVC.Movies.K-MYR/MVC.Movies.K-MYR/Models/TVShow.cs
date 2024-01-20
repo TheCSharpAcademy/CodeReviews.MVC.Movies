@@ -22,8 +22,8 @@ namespace MVC.Movies.K_MYR.Models
         [RegularExpression(@"^[A-Z]+[a-zA-Z0-9""'\s-]*$")]
         [Required]
         [StringLength(5)]
-        public string? Rating { get; set; }        
-        [Range(0, 100)]
+        public string? Rating { get; set; }
+        [Range(1, 100)]
         public int Seasons { get; set; }
     }
 }

@@ -25,9 +25,9 @@ public class DecimalBinder : IModelBinder
         }
 
         if (!decimal.TryParse(valueProviderResult.FirstValue.Replace(',', '.'), NumberStyles.Any, CultureInfo.InvariantCulture, out decimal value))
-        {                
+        {
             bindingContext.ModelState.TryAddModelError(bindingContext.ModelName, "Could not parse to decimal.");
-            return Task.CompletedTask;                
+            return Task.CompletedTask;
         }
 
         bindingContext.Result = ModelBindingResult.Success(value);

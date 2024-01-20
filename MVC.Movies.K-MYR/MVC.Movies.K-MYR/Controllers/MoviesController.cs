@@ -20,14 +20,22 @@ public class MoviesController : Controller
 
     public async Task<IActionResult> Index(string searchString, string movieGenre, string movieRating, string yearRange, string priceRange)
     {
-        int minYear = _context.Movies.Min(m => m.ReleaseDate.Year);
-        int maxYear = _context.Movies.Max(m => m.ReleaseDate.Year);
-        decimal minPrice = _context.Movies.Min(m => m.Price);
-        decimal maxPrice = _context.Movies.Max(m => m.Price);
+        int minYear = 0;
+        int maxYear = 0;
+        decimal minPrice = 0;
+        decimal maxPrice = 0;
+
+        if (_context.Movies.Any())
+        {
+            minYear = _context.Movies.Min(m => m.ReleaseDate.Year);
+            maxYear = _context.Movies.Max(m => m.ReleaseDate.Year);
+            minPrice = _context.Movies.Min(m => m.Price);
+            maxPrice = _context.Movies.Max(m => m.Price);
+        }
 
         var genres = _context.Movies.Select(m => m.Genre).Distinct().OrderBy(m => m);
         var ratings = _context.Movies.Select(m => m.Rating).Distinct().OrderBy(m => m);
-        var movies = _context.Movies.Select(m => m);        
+        var movies = _context.Movies.Select(m => m);
 
         if (!string.IsNullOrEmpty(searchString))
             movies = movies.Where(m => m.Title!.Contains(searchString));
@@ -55,7 +63,7 @@ public class MoviesController : Controller
 
             if (prices.Length == 2)
             {
-                if (decimal.TryParse(prices[0], NumberStyles.Number, CultureInfo.InvariantCulture, out decimal priceFrom) && 
+                if (decimal.TryParse(prices[0], NumberStyles.Number, CultureInfo.InvariantCulture, out decimal priceFrom) &&
                     decimal.TryParse(prices[1], NumberStyles.Number, CultureInfo.InvariantCulture, out decimal priceTo))
                     movies = movies.Where(m => m.Price >= priceFrom && m.Price <= priceTo);
             }
@@ -65,7 +73,7 @@ public class MoviesController : Controller
         {
             Genres = new SelectList(await genres.ToListAsync()),
             Ratings = new SelectList(await ratings.ToListAsync()),
-            Movies = await movies.OrderBy(m => m.Title).ToListAsync(),            
+            Movies = await movies.OrderBy(m => m.Title).ToListAsync(),
             MinYear = minYear,
             MaxYear = maxYear,
             MinPrice = minPrice,
@@ -113,11 +121,11 @@ public class MoviesController : Controller
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (! await MovieExists(movie.Id))
+                if (!await MovieExists(movie.Id))
                     TempData["errorMessage"] = "An error occured while attempting to update the movie: Movie not found.";
                 else
                     TempData["errorMessage"] = "An error occured while attempting to update the movie.";
-            }            
+            }
         }
         else
         {
@@ -136,7 +144,7 @@ public class MoviesController : Controller
         if (movie is null)
         {
             TempData["errorMessage"] = "An error occured while attempting to update the movie: Movie not found.";
-            return Redirect(Request.Headers.Referer.ToString());
+            return RedirectToAction(nameof(Index));
         }
 
         _context.Movies.Remove(movie);
@@ -144,7 +152,7 @@ public class MoviesController : Controller
 
         TempData["successMessage"] = $"'{movie.Title}' was deleted successfully.";
 
-        return Redirect(Request.Headers.Referer.ToString());
+        return RedirectToAction(nameof(Index));
     }
 
     public async Task<ActionResult> Details(int? id)
