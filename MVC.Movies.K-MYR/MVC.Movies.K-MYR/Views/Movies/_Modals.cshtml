@@ -1,0 +1,111 @@
+﻿@model MVC.Movies.K_MYR.Models.Movie
+
+
+<div class="modal fade" id="addMovie" aria-labelledby="addMovie-label" aria-hidden="true" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header pb-2 text-center">
+                <h3 id="addMovie-label" class="red">Add Movie</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-black pt-2">
+                <form id="addMovieForm" method="post" asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group mb-1">
+                        <label asp-for="Title" class="control-label "></label>
+                        <input asp-for="Title" class="form-control" value="" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-1">
+                        <label asp-for="Genre" class="control-label"></label>
+                        <input asp-for="Genre" class="form-control" value="" />
+                        <span asp-validation-for="Genre" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-1">
+                        <label asp-for="ReleaseDate" class="control-label"></label>
+                        <input asp-for="ReleaseDate" class="form-control" value="" />
+                        <span asp-validation-for="ReleaseDate" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-1">
+                        <label asp-for="Price" class="control-label"></label>
+                        <input asp-for="Price" class="form-control" value="" />
+                        <span asp-validation-for="Price" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Rating" class="control-label"></label>
+                        <input asp-for="Rating" class="form-control" value="" />
+                        <span asp-validation-for="Rating" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mt-3">
+                        <input type="submit" value="Add" class="btn formButton" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="updateMovie" aria-labelledby="updateMovie-label" aria-hidden="true" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header pb-2 align-contents-center">
+                <h3 id="updateMovie-label" class="text-truncate red"></h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-black pt-2">
+                <form id="updateMovieForm" method="post" asp-action="Edit">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" id="updateMovie-input_id" asp-for="Id">
+                    <div class="form-group mb-1">
+                        <label asp-for="Title" class="control-label "></label>
+                        <input id="updateMovie-input_title" asp-for="Title" class="form-control" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-1">
+                        <label asp-for="Genre" class="control-label"></label>
+                        <input id="updateMovie-input_genre" asp-for="Genre" class="form-control" />
+                        <span asp-validation-for="Genre" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-1">
+                        <label asp-for="ReleaseDate" class="control-label"></label>
+                        <input id="updateMovie-input_release" asp-for="ReleaseDate" class="form-control" />
+                        <span asp-validation-for="ReleaseDate" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-1">
+                        <label asp-for="Price" class="control-label"></label>
+                        <input id="updateMovie-input_price" asp-for="Price" class="form-control" />
+                        <span asp-validation-for="Price" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Rating" class="control-label"></label>
+                        <input id="updateMovie-input_rating" asp-for="Rating" class="form-control" />
+                        <span asp-validation-for="Rating" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mt-3">
+                        <input type="submit" value="Edit" class="btn formButton" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteMovie" aria-labelledby="deleteMovie-label" aria-hidden="true" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header pb-2">
+                <h3 id="deleteMovie-label" class="text-truncate red"></h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-black">
+                <p class="text-break" id="deleteConfirmationMessage"></p>
+                <form id="deleteMovieForm" method="post" asp-action="Delete">
+                    <input type="hidden" id="deleteMovie-input_id" asp-for="Id">
+                    <div class="form-group mt-3">
+                        <input type="submit" value="Delete" class="btn formButton" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

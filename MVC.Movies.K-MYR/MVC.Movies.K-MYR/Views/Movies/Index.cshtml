@@ -1,0 +1,135 @@
+@model MVC.Movies.K_MYR.Models.MovieListViewModel
+@using System.Globalization;
+
+@{
+    ViewData["Title"] = "Index - Movies";
+}
+
+<div class="container text-white">
+    <div class="d-flex justify-content-between mb-2">
+        <h1 class="red">Movies</h1>
+        <button class="addButton my-2" type="button" data-bs-toggle="modal" data-bs-target="#addMovie">
+            Add New
+        </button>
+    </div>
+    <form asp-controller="Movies" asp-action="Index" method="get">
+        <div class="d-flex mb-3">
+            <img class="me-3 search-icon" src="/img/search.svg" alt="" />
+            <input asp-for="SearchString" class="form-control w-100 my-2" id="movies-search" type="text" />
+        </div>
+        <div id="filter-accordion" class="accordion-flush mb-4">
+            <div class="accordion-item bg-dark text-white">
+                <h2 id="filterHeader" class="accordion-header bg-dark text-white">
+                    <div class="d-flex accordion-btn collapsed">
+                        <strong id="filterCollapse-btn" class="accordion-btn-text bg-dark text-white" tabindex="0">Filters</strong>
+                        <button id="reset-btn" class="accordion-btn-text bg-dark text-white" type="button" aria-controls="resetFilters" tabindex="0">
+                            <strong>Reset</strong>
+                        </button>
+                        <div class="accordion-btn-caret"></div>
+                    </div>
+                </h2>
+                <div id="collapseFilters" class="accordion-collapse collapse" aria-labelledby="filterHeader" data-bs-parent="#filterAccordion">
+                    <div class="accordion-body red">
+                        <div class="form-group mb-1">
+                            <label id="genre-label" class="me-2" for="Genre">Genre</label>
+                            <select class="me-4" asp-for="MovieGenre" asp-items="Model.Genres" aria-labelledby="genre-label">
+                                <option value="">All</option>
+                            </select>
+                            <label id="rating-label" class="me-2" for="Rating">Rating</label>
+                            <select asp-for="MovieRating" asp-items="Model.Ratings" aria-labelledby="genre-label">
+                                <option value="">All</option>
+                            </select>
+                        </div>
+                        <div class="text-center">
+                            <div id="releaseDate-label" class="mt-2 strong">Release Date</div>
+                            <div class="d-flex">
+                                <input id="yearFrom" type="text" class="range-input h-50 me-4" value="" data-min="@Model.MinYear" aria-label="Year range start" />
+                                <input asp-for="YearRange" type="text" class="range-slider" id="yearRange" aria-label="Year range slider text input" />
+                                <input id="yearTo" type="text" class="range-input h-50 ms-4" value="" data-max="@Model.MaxYear" aria-label="Year range end" />
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <div id="price-label" class="mt-1">Price (@CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol)</div>
+                            <div class="d-flex">
+                                <input id="priceFrom" type="text" class="range-input h-50 me-4" value="" data-min="@Model.MinPrice.ToString(new CultureInfo("en-US"))" aria-label="Price range start" />
+                                <input asp-for="PriceRange" type="text" class="range-slider" id="priceRange" />
+                                <input id="priceTo" type="text" class="range-input h-50 ms-4" value="" data-max="@Model.MaxPrice.ToString(new CultureInfo("en-US"))" aria-label="Price range end" />
+                            </div>
+                        </div>
+                        <div class="text-center mt-2">
+                            <input class="filter-btn" type="submit" value="Filter" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <table class="table text-white table-hover table-borderless w-100 px-2" id="movies-table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Movie.Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Movie.ReleaseDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Movie.Genre)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Movie.Price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Movie.Rating)
+                </th>
+                <th class="px-0 icon-header"></th>
+                <th class="px-0 icon-header"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Movies)
+            {
+                <tr data-movie-id="@item.Id">
+                    <td class="text-truncate">
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td class="text-truncate">
+                        @Html.DisplayFor(modelItem => item.ReleaseDate)
+                    </td>
+                    <td class="text-truncate">
+                        @Html.DisplayFor(modelItem => item.Genre)
+                    </td>
+                    <td class="text-truncate">
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td class="text-truncate">
+                        @Html.DisplayFor(modelItem => item.Rating)
+                    </td>
+                    <td class="px-1">
+                        <button type="button" class="table-btn px-0" onclick="openUpdateMovieModal(
+                            '@item.Id', '@item.Title', '@item.ReleaseDate.ToString("yyyy-MM-dd")', '@item.Genre', '@Math.Round(item.Price, 2)', '@item.Rating')">
+                            <img class="updateIcon" src="/img/pencil_white.svg" />
+                        </button>
+                    </td>
+                    <td class="px-1">
+                        <button type="button" class="table-btn px-0" onclick="openDeleteMovieModal(
+                            '@item.Id', '@item.Title')">
+                            <img class="deleteIcon" src="/img/trash_white.svg" />
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@await Html.PartialAsync("_Modals", Model.Movie)
+
+@section Scripts {
+    <script src="~/js/MoviesIndex.js"></script>
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
