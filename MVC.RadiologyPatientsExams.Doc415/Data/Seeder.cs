@@ -73,8 +73,8 @@ namespace RadiologyPatientsExams.Data
                     {
                         RefPatientId = id,
                         Date = DateTime.Today.Subtract(TimeSpan.FromDays(random.Next(3, 20))),
-                        Doctor = doctorList[random.Next(0, doctorList.Count - 1)],
-                        Type = modalities[random.Next(0, modalities.Count - 1)],
+                        Doctor = doctorList[random.Next(0, doctorList.Count)],
+                        Type = modalities[random.Next(0, modalities.Count)],
                         Diagnosis = diagnosisList[random.Next(0, diagnosisList.Count - 1)],
                         Comments = "...",
                         NotDeleted = true
