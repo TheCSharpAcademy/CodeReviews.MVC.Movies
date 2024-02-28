@@ -28,6 +28,7 @@ namespace RadiologyPatientsExams.Repositories
             {
                 exams = exams.Where(s => s.Type == ExamModality);
             }
+            
             return await exams.Where(x => x.NotDeleted == true).ToListAsync();
         }
 

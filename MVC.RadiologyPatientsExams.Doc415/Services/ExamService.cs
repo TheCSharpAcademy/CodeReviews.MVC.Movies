@@ -18,6 +18,7 @@ public class ExamService
     public async Task<ExamListViewModel> GetAllExams(string ExamDoctor, string ExamModality)
     {
         var examListFromDb = await _examRepository.GetAllExams(ExamDoctor, ExamModality);
+        examListFromDb=examListFromDb.OrderByDescending(x => x.Date).ToList();
         var patientNameList = new List<(string, string)>();
         foreach (var exam in examListFromDb)
         {
@@ -62,7 +63,9 @@ public class ExamService
 
     public async Task<List<Exam>> GetPatientsExams(int PatientRefId)
     {
-        return await _examRepository.GetPatientsExams(PatientRefId);
+        var patientExams= await _examRepository.GetPatientsExams(PatientRefId);
+        patientExams = patientExams.OrderByDescending(x => x.Date).ToList();
+        return patientExams;
     }
 
     public async Task<List<ExamViewModel>> GetPatientsExamsForView(int PatientRefId)
