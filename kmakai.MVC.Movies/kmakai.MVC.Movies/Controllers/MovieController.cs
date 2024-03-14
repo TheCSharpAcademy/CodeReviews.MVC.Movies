@@ -1,11 +1,12 @@
 ﻿using kmakai.MVC.Movies.DataAccess;
 using kmakai.MVC.Movies.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using static System.Reflection.Metadata.BlobBuilder;
 
 namespace kmakai.MVC.Movies.Controllers;
 
+[Authorize]
 public class MovieController : Controller
 {
     private readonly AppDbContext _context;
@@ -14,6 +15,8 @@ public class MovieController : Controller
     {
         _context = context;
     }
+
+    [AllowAnonymous]
     public IActionResult Index(string searchString)
     {
         var movies = from m in _context.Movies
@@ -45,6 +48,7 @@ public class MovieController : Controller
         return View(movie);
     }
 
+    [AllowAnonymous]
     public async Task<IActionResult> Details(int id)
     {
         var movie = await _context.Movies.FindAsync(id);
