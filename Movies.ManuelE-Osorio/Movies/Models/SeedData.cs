@@ -13,12 +13,14 @@ public static class SeedData
         using var context = new MovieContext(
             serviceProvider.GetRequiredService<
                 DbContextOptions<MovieContext>>());
-        if (context.TvShow.Any())
+
+        context.Database.EnsureCreated();
+        if (context.Movie.Any())
         {
             return;
         }
-        context.TvShow.AddRange(
-            new TvShow
+        context.Movie.AddRange(
+            new Movie
             {
                 Title = "When Harry Met Sally",
                 ReleaseDate = DateTime.Parse("1989-2-12"),
@@ -26,21 +28,21 @@ public static class SeedData
                 Rating = "R",
                 Price = 7.99M
             },
-            new TvShow
+            new Movie
             {
                 Title = "Ghostbusters ",
                 ReleaseDate = DateTime.Parse("1984-3-13"),
                 Genre = "Comedy",
                 Price = 8.99M
             },
-            new TvShow
+            new Movie
             {
                 Title = "Ghostbusters 2",
                 ReleaseDate = DateTime.Parse("1986-2-23"),
                 Genre = "Comedy",
                 Price = 9.99M
             },
-            new TvShow
+            new Movie
             {
                 Title = "Rio Bravo",
                 ReleaseDate = DateTime.Parse("1959-4-15"),

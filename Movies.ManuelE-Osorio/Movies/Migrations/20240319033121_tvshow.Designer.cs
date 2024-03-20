@@ -13,7 +13,7 @@ namespace Movies.Migrations
 {
     [DbContext(typeof(MovieContext))]
     [Migration("20240319033121_tvshow")]
-    partial class tvshow
+    partial class Tvshow
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

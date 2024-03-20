@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Movies.Data;
@@ -12,10 +13,15 @@ builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
+app.UseRequestLocalization( new RequestLocalizationOptions
+    {
+        DefaultRequestCulture = new RequestCulture("en-US")
+    }
+);
+
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-
     SeedData.InitializeMovies(services);
     SeedData.InitializeTvShows(services);
 }
@@ -37,6 +43,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Movies}/{action=Index}/{id?}");
 
 app.Run();

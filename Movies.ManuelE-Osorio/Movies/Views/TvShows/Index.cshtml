@@ -1,0 +1,88 @@
+@model IEnumerable<Movies.Models.TvShow>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="row">
+    <div class="col">
+        <h1>
+            TV Shows
+        </h1>
+    </div>
+    <div class="col">
+        <h1>
+            Image Placeholder
+        </h1>
+    </div>
+</div>
+
+<ul class="nav nav-tabs">
+    <li class="nav-show">
+        <a class="nav-link active" aria-current="page" asp-action="Index">Index</a>
+    </li>
+    <li class="nav-show">
+        <a class="nav-link" asp-action="Create">Create New</a>
+    </li>
+</ul>
+
+<div class="tab-content p-3" id="myTabContent">
+@* <form>
+    <p>
+        Genre: <input type="" asp-for="" />
+        <input type="submit" value="Filter" />
+    </p>
+</form> *@
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(p => p.FirstOrDefault()!.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(p => p.FirstOrDefault()!.ReleaseDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(p => p.FirstOrDefault()!.Genre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(p => p.FirstOrDefault()!.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(p => p.FirstOrDefault()!.Rating)
+            </th>
+            <th>
+
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var show in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor( p => show.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor( p => show.ReleaseDate)
+                </td>
+                <td>
+                    @Html.DisplayFor( p => show.Genre)
+                </td>
+                <td>
+                    @Html.DisplayFor( p => show.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor( p => show.Rating)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@show.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@show.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@show.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
