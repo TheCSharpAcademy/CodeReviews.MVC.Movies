@@ -1,18 +1,13 @@
 @model Movies.Models.TvShow
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Create";
 }
 
-<div class="row">
+<div class="row bannertv align-items-center">
     <div class="col">
         <h1>
             TV Shows
-        </h1>
-    </div>
-    <div class="col">
-        <h1>
-            Image Placeholder
         </h1>
     </div>
 </div>
@@ -51,9 +46,9 @@
                 <input asp-for="Price" class="form-control" />
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group pt-2">
                 <label asp-for="Rating" class="control-label"></label>
-                <input asp-for="Rating" class="form-control" />
+                <select asp-for="Rating" asp-items="Movies.Models.ValidRatings.TvShowsRatings"></select>
                 <span asp-validation-for="Rating" class="text-danger"></span>
             </div>
             <div class="form-group p-3">

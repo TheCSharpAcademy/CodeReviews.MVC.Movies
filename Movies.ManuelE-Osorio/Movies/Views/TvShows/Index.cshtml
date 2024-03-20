@@ -1,21 +1,17 @@
-@model IEnumerable<Movies.Models.TvShow>
+@model Movies.Models.TvShowViewModel
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<div class="row">
+<div class="row bannertv align-items-center">
     <div class="col">
         <h1>
             TV Shows
         </h1>
     </div>
-    <div class="col">
-        <h1>
-            Image Placeholder
-        </h1>
-    </div>
 </div>
+
 
 <ul class="nav nav-tabs">
     <li class="nav-show">
@@ -27,31 +23,35 @@
 </ul>
 
 <div class="tab-content p-3" id="myTabContent">
-@* <form>
+<form>
     <p>
-        Genre: <input type="" asp-for="" />
+        <select asp-for="TvShowGenre" asp-items="Model.Genres">
+            <option value="">All</option>
+        </select>
+
+        Title: <input type="text" asp-for="SearchString" />
         <input type="submit" value="Filter" />
     </p>
-</form> *@
+</form>
 </div>
 
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(p => p.FirstOrDefault()!.Title)
+                @Html.DisplayNameFor(p => p.TvShows.FirstOrDefault()!.Title)
             </th>
             <th>
-                @Html.DisplayNameFor(p => p.FirstOrDefault()!.ReleaseDate)
+                @Html.DisplayNameFor(p => p.TvShows.FirstOrDefault()!.ReleaseDate)
             </th>
             <th>
-                @Html.DisplayNameFor(p => p.FirstOrDefault()!.Genre)
+                @Html.DisplayNameFor(p => p.TvShows.FirstOrDefault()!.Genre)
             </th>
             <th>
-                @Html.DisplayNameFor(p => p.FirstOrDefault()!.Price)
+                @Html.DisplayNameFor(p => p.TvShows.FirstOrDefault()!.Price)
             </th>
             <th>
-                @Html.DisplayNameFor(p => p.FirstOrDefault()!.Rating)
+                @Html.DisplayNameFor(p => p.TvShows.FirstOrDefault()!.Rating)
             </th>
             <th>
 
@@ -59,7 +59,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach(var show in Model)
+        @foreach(var show in Model.TvShows)
         {
             <tr>
                 <td>

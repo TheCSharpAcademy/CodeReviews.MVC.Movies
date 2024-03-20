@@ -4,14 +4,26 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<div class="row banner align-items-center">
+    <div class="col">
+        <h1>
+            Movies
+        </h1>
+    </div>
+</div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<form asp-controller="Movies" asp-action="Index" method="get">
+<ul class="nav nav-tabs">
+    <li class="nav-show">
+        <a class="nav-link active" aria-current="page" asp-action="Index">Index</a>
+    </li>
+    <li class="nav-show">
+        <a class="nav-link" asp-action="Create">Create New</a>
+    </li>
+</ul>
+
+<div class="tab-content p-3" id="myTabContent">
+<form>
     <p>
-
         <select asp-for="MovieGenre" asp-items="Model.Genres">
             <option value="">All</option>
         </select>
@@ -20,51 +32,54 @@
         <input type="submit" value="Filter" />
     </p>
 </form>
+</div>
 
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Movies![0].Title)
+                @Html.DisplayNameFor(p => p.Movies.FirstOrDefault()!.Title)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Movies![0].ReleaseDate)
+                @Html.DisplayNameFor(p => p.Movies.FirstOrDefault()!.ReleaseDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Movies![0].Genre)
+                @Html.DisplayNameFor(p => p.Movies.FirstOrDefault()!.Genre)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Movies![0].Price)
+                @Html.DisplayNameFor(p => p.Movies.FirstOrDefault()!.Price)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Movies![0].Rating)
+                @Html.DisplayNameFor(p => p.Movies.FirstOrDefault()!.Rating)
             </th>
-            <th></th>
+            <th>
+
+            </th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Movies!)
+        @foreach(var show in Model.Movies!)
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Title)
+                    @Html.DisplayFor( p => show.Title)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ReleaseDate)
+                    @Html.DisplayFor( p => show.ReleaseDate)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Genre)
+                    @Html.DisplayFor( p => show.Genre)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Price)
+                    @Html.DisplayFor( p => show.Price)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Rating)
+                    @Html.DisplayFor( p => show.Rating)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@show.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@show.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@show.Id">Delete</a>
                 </td>
             </tr>
         }

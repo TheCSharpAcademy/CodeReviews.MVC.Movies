@@ -11,24 +11,28 @@ public class TvShows(MovieContext context) : Controller
 {
     private readonly MovieContext _context = context;
 
-    public List<TvShow> Shows = [];
-
-
-    public async Task<IActionResult> Index(string movieGenre, string searchString)
+    public async Task<IActionResult> Index(string tvShowGenre, string searchString)
     {
         if(_context.TvShow is null)
             return Problem("Entity set 'MvcMovieContext.Movie'  is null.");
 
         var shows = _context.TvShow.AsQueryable();
+        var genres = _context.TvShow.Select(p => p.Genre).Distinct();
 
         if(searchString is not null)
             shows = shows.Where(p => p.Title!.Contains(searchString));
 
-        if(movieGenre is not null)
-            shows = shows.Where( p => p.Genre == movieGenre);
+        if(tvShowGenre is not null)
+            shows = shows.Where( p => p.Genre == tvShowGenre);
 
-        Shows = await shows.ToListAsync();
-        return View(Shows);
+        var showsViewModel = new TvShowViewModel
+            {
+                TvShows = await shows.ToListAsync(),
+                Genres = new SelectList(await genres.ToListAsync()),
+            };
+        
+
+        return View(showsViewModel);
     }
 
     public async Task<IActionResult> Details(int? id)

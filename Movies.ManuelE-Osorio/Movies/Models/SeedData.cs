@@ -1,8 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Movies.Data;
-using System;
-using System.Linq;
+using System.Globalization;
 
 namespace Movies.Models;
 
@@ -14,6 +12,7 @@ public static class SeedData
             serviceProvider.GetRequiredService<
                 DbContextOptions<MovieContext>>());
 
+        context.Database.EnsureDeleted();
         context.Database.EnsureCreated();
         if (context.Movie.Any())
         {
@@ -22,32 +21,50 @@ public static class SeedData
         context.Movie.AddRange(
             new Movie
             {
-                Title = "When Harry Met Sally",
-                ReleaseDate = DateTime.Parse("1989-2-12"),
-                Genre = "Romantic Comedy",
-                Rating = "R",
+                Title = "Citizen Kane",
+                ReleaseDate = DateTime.ParseExact("1989-09-05", "yyyy-MM-dd", CultureInfo.InvariantCulture),
+                Genre = "Drama",
+                Rating = "PG",
                 Price = 7.99M
             },
             new Movie
             {
-                Title = "Ghostbusters ",
-                ReleaseDate = DateTime.Parse("1984-3-13"),
-                Genre = "Comedy",
+                Title = "The Good, the Bad and the Ugly",
+                ReleaseDate = DateTime.ParseExact("1966-12-23", "yyyy-MM-dd", CultureInfo.InvariantCulture),
+                Genre = "Western",
                 Price = 8.99M
             },
             new Movie
             {
-                Title = "Ghostbusters 2",
-                ReleaseDate = DateTime.Parse("1986-2-23"),
+                Title = "The Goonies",
+                ReleaseDate = DateTime.ParseExact("1985-06-07", "yyyy-MM-dd", CultureInfo.InvariantCulture),
                 Genre = "Comedy",
+                Rating = "PG",
                 Price = 9.99M
             },
             new Movie
             {
-                Title = "Rio Bravo",
-                ReleaseDate = DateTime.Parse("1959-4-15"),
-                Genre = "Western",
+                Title = "Chinatown",
+                ReleaseDate = DateTime.ParseExact("1974-06-20", "yyyy-MM-dd", CultureInfo.InvariantCulture),
+                Genre = "Thriller",
+                Rating = "R",
                 Price = 3.99M
+            },
+            new Movie
+            {
+                Title = "The Godfather Part II",
+                ReleaseDate = DateTime.ParseExact("1974-12-12", "yyyy-MM-dd", CultureInfo.InvariantCulture),
+                Genre = "Drama",
+                Rating = "R",
+                Price = 25.99M
+            },
+            new Movie
+            {
+                Title = "One Flew Over the Cuckoo's Nest",
+                ReleaseDate = DateTime.ParseExact("1975-11-19", "yyyy-MM-dd", CultureInfo.InvariantCulture),
+                Genre = "Drama",
+                Rating = "R",
+                Price = 17M
             }
         );
         context.SaveChanges();
@@ -65,32 +82,35 @@ public static class SeedData
         context.TvShow.AddRange(
             new TvShow
             {
-                Title = "When Harry Met Sally",
-                ReleaseDate = DateTime.Parse("1989-2-12"),
-                Genre = "Romantic Comedy",
-                Rating = "R",
+                Title = "The Sopranos",
+                ReleaseDate = DateTime.ParseExact("1999-01-10", "yyyy-MM-dd", CultureInfo.InvariantCulture),
+                Genre = "Crime",
+                Rating = "TV-MA",
                 Price = 7.99M
             },
             new TvShow
             {
-                Title = "Ghostbusters ",
-                ReleaseDate = DateTime.Parse("1984-3-13"),
-                Genre = "Comedy",
+                Title = "Breaking Bad",
+                ReleaseDate = DateTime.ParseExact("2008-01-20", "yyyy-MM-dd", CultureInfo.InvariantCulture),
+                Genre = "Crime",
+                Rating = "TV-MA",
                 Price = 8.99M
             },
             new TvShow
             {
-                Title = "Ghostbusters 2",
-                ReleaseDate = DateTime.Parse("1986-2-23"),
+                Title = "Seinfeld",
+                ReleaseDate = DateTime.ParseExact("1989-07-05", "yyyy-MM-dd", CultureInfo.InvariantCulture),
                 Genre = "Comedy",
-                Price = 9.99M
+                Rating = "TV-PG",
+                Price = 12.99M
             },
             new TvShow
             {
-                Title = "Rio Bravo",
-                ReleaseDate = DateTime.Parse("1959-4-15"),
-                Genre = "Western",
-                Price = 3.99M
+                Title = "House",
+                ReleaseDate = DateTime.ParseExact("2004-11-16", "yyyy-MM-dd", CultureInfo.InvariantCulture),
+                Genre = "Drama",
+                Rating = "TV-14",
+                Price = 15.99M
             }
         );
         context.SaveChanges();

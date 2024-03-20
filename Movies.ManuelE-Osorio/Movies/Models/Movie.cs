@@ -13,7 +13,8 @@ public class Movie
     [Display(Name = "Release Date"), DataType(DataType.Date)]
     public DateTime ReleaseDate { get; set; }
 
-    [RegularExpression(@"^[A-Z]+[a-zA-Z\s]*$"), Required, StringLength(30)]
+    [RegularExpression(@"^[A-Z]+[a-zA-Z\s]*$", ErrorMessage = "Only letters are allowed, it has to start with a capital letter."), 
+    Required, StringLength(30)]
     public string? Genre { get; set; }
 
     [Range(1, 100), DataType(DataType.Currency)]
@@ -21,6 +22,6 @@ public class Movie
     [DisplayFormat(DataFormatString="{0:C}")]
     public decimal Price { get; set; }
 
-    [RegularExpression(@"^[A-Z]+[a-zA-Z0-9""'\s-]*$"), StringLength(5)]
     public string? Rating { get; set; }
+
 }
