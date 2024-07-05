@@ -1,0 +1,78 @@
+﻿@model MovieListViewModel
+
+@{
+    ViewData["Title"] = "Movies";
+}
+
+<h1>@ViewData["Title"]</h1>
+<i className="fa fa-star"></i>
+<div class="col-md-12">
+    <form method="get" asp-action="Index" class="input-group">
+        <select class="form-select-lg rounded-start" asp-for="SelectedGenreId" asp-items="Model.GenresSelectList"
+            onchange="this.form.submit()">
+            <option>Filter by genre</option>
+        </select>
+        <input class="form-control form-control-lg" type="text" placeholder="Search by title or actor name"
+            asp-for="SearchText" onchange="this.form.submit()" />
+        <input type="submit" class="form-control btn btn-primary btn-lg" style="max-width: 200px;" value="Search" />
+    </form>
+</div>
+
+<div class="container w-100 d-flex align-items-center justify-content-center m-3">
+    <a asp-action="Create" class="btn btn-primary btn-lg"><i class="bi bi-plus-lg"></i>Add Movie</a>
+</div>
+
+
+
+<div class="container mt-5">
+
+    <div class="row">
+        @if (Model.Movies.Count == 0)
+
+        {
+            <h4 class="text-disabled text-italic">No movies</h4>
+        }
+
+        @foreach (var item in Model.Movies ?? [])
+
+        {
+            <div class="col-md-4 mb-4">
+
+                <div class="card movie-card">
+                    <a asp-action="Details" asp-route-id="@item.MovieId" class="stretched-link"></a>
+                    <img src="@item.Image" class="movie-poster" alt="Movie Poster"
+                        onerror="this.onerror=null; this.src='/img/poster-fallback.jpg'">
+
+                    <div class="rating-overlay" title="@item.Rating">
+                        Rating
+
+                        @{
+                            var movieStarRating = new MovieStarRatingViewModel(item.Rating);
+
+                            @for (int i = 0; i < movieStarRating.NumFullStars; i++)
+
+                            {
+                                <i class="bi-star-fill"></i>
+                            }
+
+                            @if (movieStarRating.HasHalfStar)
+
+                            {
+                                <i class="bi-star-half"></i>
+                            }
+
+                            @for (int i = 0; i < movieStarRating.NumEmptyStars; i++)
+
+                            {
+                                <i class="bi-star"></i>
+                            }
+                        }
+                    </div>
+                    <div class="movie-details">
+                        <h5 class="movie-title">@Html.DisplayFor(m => item.Title)</h5>
+                        <div class="movie-plot">@Html.DisplayFor(m => item.Plot)</div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>

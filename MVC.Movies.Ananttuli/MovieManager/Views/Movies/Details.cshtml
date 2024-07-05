@@ -1,0 +1,68 @@
+﻿@model Movie
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="btn-group-md mb-5">
+    <a class="btn btn-secondary" asp-action="Index"><i class="bi bi-arrow-left"></i> Back to List</a>
+</div>
+<div class="container d-flex flex-wrap justify-content-around">
+
+    <img src="@Model.Image" class="movie-poster mb-4" style="max-width: 300px;" alt="Movie Poster"
+        onerror="this.onerror=null; this.src='/img/poster-fallback.jpg'">
+
+    <div class="col-md-6">
+        <h1>@Html.DisplayFor(m => m.Title)</h1>
+        <dl class="row">
+            @if (Model.Plot != null)
+            {
+                <span>@Html.DisplayFor(m => m.Plot)</span>
+            }
+        </dl>
+        <dl class="row">
+            <h4>Genres</h4>
+            @foreach (var movieGenre in Model.MovieGenres ?? [])
+            {
+                <div>@Html.DisplayFor(m => movieGenre.Genre.Name)</div>
+            }
+        </dl>
+
+        <dl class="row">
+            <h4>Actors</h4>
+            <div class="d-flex flex-wrap gap-2 text-dark">
+                @foreach (var actor in Model.MovieActors ?? [])
+
+
+
+                {
+                    <div class="col mb-4" style="max-width: 150px;">
+                        <span class="card actor-card d-flex flex-column align-content-center">
+                            <div class="actor-image" style="background-image: url('@actor.Person.Thumbnail'), 
+                                    url('/img/avatar.png'); 
+                                    background-repeat: no-repeat;
+                                    background-size: cover;
+                                    height: 100px;
+                                    background-position:center;">
+
+                            </div>
+                            <div class="card-body text-center">
+                                <h6 class="card-title">@Html.DisplayFor(m => actor.Person.Name)</h6>
+                            </div>
+                        </span>
+                    </div>
+                }
+            </div>
+        </dl>
+
+        <div class="btn-group-md">
+            <a class="btn btn-warning" asp-action="Edit" asp-route-id="@Model?.MovieId"><i class="bi bi-pencil"></i>
+                Edit</a>
+            <form class="btn" method="post" asp-action="Delete"
+                onsubmit="return confirm('Are you sure you want to submit?');" asp-route-id="@Model.MovieId">
+                <input type="hidden" asp-for="MovieId" />
+                <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> Delete</button>
+            </form>
+        </div>
+    </div>
+</div>

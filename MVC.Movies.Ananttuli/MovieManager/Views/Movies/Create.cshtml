@@ -1,0 +1,84 @@
+﻿@model MovieUpsertViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Movie</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Movie.Title"></label>
+                <input type="text" asp-for="Movie.Title" class="form-control" />
+                <span asp-validation-for="Movie.Title" class="text-danger" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Movie.Year"></label>
+                <input type="text" asp-for="Movie.Year" class="form-control" />
+                <span asp-validation-for="Movie.Year" class="text-danger" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Movie.Image"></label>
+                <input type="text" asp-for="Movie.Image" class="form-control" />
+                <span asp-validation-for="Movie.Image" class="text-danger" />
+            </div>
+            <div class="form-group text-black">
+                <label asp-for="GenreIds" class="text-light">Select Genre(s)</label>
+                <select asp-for="GenreIds" asp-items="Model.GenresSelectList" class="form-control"
+                    multiple="multiple"></select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Movie.Rating"></label>
+                <input type="text" asp-for="Movie.Rating" class="form-control" />
+                <span asp-validation-for="Movie.Rating" class="text-danger" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Movie.Plot"></label>
+                <textarea asp-for="Movie.Plot" class="form-control"></textarea>
+                <span asp-validation-for="Movie.Plot" class="text-danger" />
+            </div>
+
+            <div class="form-group text-black">
+                <label asp-for="ActorPersonIds" class="text-light">Select Actor(s)</label>
+                <select asp-for="ActorPersonIds" asp-items="Model.ActorsSelectList" class="form-control"
+                    multiple="multiple"></select>
+            </div>
+
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a class="btn btn-secondary" asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(document).ready(function () {
+            $('#ActorPersonIds').select2({
+                placeholder: "Select Actors",
+                allowClear: true
+            });
+
+            $('#GenreIds').select2({
+                placeholder: "Select Genres",
+                allowClear: true,
+                theme: "classic"
+            });
+        });
+    </script>
+}
