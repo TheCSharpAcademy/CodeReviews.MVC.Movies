@@ -7,7 +7,6 @@
 
 - Clone this repo and `cd MovieManager`
 - Pre-requisite: SQL server local DB should be running. DB connection config configurable in `appsettings.json`
-- `dotnet ef database update`
 - `dotnet run`
 
 ## Tech stack
