@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Movies.kwm0304.Views.Movie
 {
-    public class IndexModel : PageModel
+    public class WelcomeModel : PageModel
     {
         public void OnGet()
         {
