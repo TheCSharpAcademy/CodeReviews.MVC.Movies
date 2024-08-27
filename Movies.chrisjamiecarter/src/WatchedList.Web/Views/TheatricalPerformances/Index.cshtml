@@ -1,0 +1,132 @@
+﻿@model TheatricalPerformanceViewModel
+
+@{
+    ViewData["Title"] = "Theatrical Performances";
+}
+
+<h1>Theatrical Performances</h1>
+<hr />
+
+<a button type="button" class="btn btn-success" asp-action="Create">
+    <span class="me-2">Record</span>
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="fas fa-theater-masks" viewBox="0 0 640 512">
+        <path d="M206.9 245.2c-35.9 10.5-60 41.2-57.5 74.1 11.4-12.7 28.8-23.7 49.9-30.9l7.6-43.2zM95.8 295L64.1 115.5c-.3-1.6 .3-2.6 .2-2.7 57.8-32.1 123.1-49 189-49 1.6 0 3.2 .2 4.9 .2 14-13.5 31.7-22.8 51.6-26 18.9-3 38.1-4.6 57.2-5.3-10-14-24.5-24.2-41.8-27C301.3 1.9 277.2 0 253.3 0 176.7 0 101 19.4 33.2 57.1 9 70.5-3.9 98.5 1.1 126.6l31.7 179.5c14.2 80.5 136.3 142.1 204.5 142.1 3.6 0 6.8-.5 10-.8-13.5-17.1-28.9-40.5-39.5-67.6-47.6-13-106.1-51.6-111.9-84.8zm97.6-137.5c-.7-4.1-2.2-7.9-4.1-11.4-8.3 8.9-20.7 15.8-35.3 18.3-14.7 2.6-28.7 .4-39.5-5.2-.5 3.9-.6 8 .1 12.1 3.8 21.7 24.6 36.2 46.3 32.4 21.8-3.8 36.3-24.5 32.4-46.2zM606.8 120.9c-89-49.4-191.4-67.4-292-51.4-27.3 4.4-49.1 26.3-54 54.4l-31.7 179.5c-15.4 87.1 95.3 196.3 158.3 207.4 63 11.1 204.5-53.8 219.9-140.8l31.7-179.5c5-28.1-8-56.1-32.2-69.5zm-273.2 96.8c3.8-21.7 24.6-36.2 46.3-32.4 21.8 3.8 36.3 24.5 32.5 46.2-.7 4.1-2.2 7.9-4.1 11.4-8.3-8.9-20.7-15.8-35.3-18.3-14.7-2.6-28.7-.4-39.5 5.2-.5-4-.7-8 .1-12.1zm70.5 198.8c-55.7-9.8-93.5-59.3-89-112.9 20.6 25.5 56.2 46.2 99.5 53.8 43.3 7.6 83.8 .4 111.9-16.6-14.2 51.9-66.7 85.5-122.4 75.7zm130.3-151.3c-8.3-8.9-20.7-15.8-35.3-18.3-14.7-2.6-28.7-.4-39.5 5.2-.5-3.9-.6-8 .1-12.1 3.8-21.7 24.6-36.2 46.3-32.4 21.8 3.8 36.3 24.5 32.5 46.2-.7 4.1-2.2 7.9-4.1 11.4z" />
+    </svg>
+    <span class="ms-2">Watched</span>
+</a>
+
+<form class="mt-3 mb-3" asp-controller="TheatricalPerformances" asp-action="Index" method="get">
+    <div class="row">
+        <div class="col">
+            <label class="col-form-label" asp-for="Rating" class="control-label"></label>
+            <select class="form-select" asp-for="Rating" asp-items="Model.Ratings">
+                <option value="">All</option>
+            </select>
+        </div>
+        <div class="col">
+            <label class="col-form-label" asp-for="SearchString"></label>
+            <input class="form-control" asp-for="SearchString" />
+        </div>
+        <div class="col-auto align-content-end">
+            <input type="submit" class="btn btn-primary" value="Filter" />
+        </div>
+    </div>
+</form>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th class="col-6">
+                <a asp-controller="TheatricalPerformances" asp-action="Index" asp-route-rating="@Model.RatingId" asp-route-searchString="@Model.SearchString" asp-route-sortOrder="@Model.TitleSort">
+                    @Html.DisplayNameFor(model => model.TheatricalPerformances!.FirstOrDefault()!.Title)
+                    @if (Model.CurrentSort == "title_asc")
+                    {
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-up" viewBox="0 0 16 16">
+                            <path d="M3.204 11h9.592L8 5.519zm-.753-.659 4.796-5.48a1 1 0 0 1 1.506 0l4.796 5.48c.566.647.106 1.659-.753 1.659H3.204a1 1 0 0 1-.753-1.659" />
+                        </svg>
+                    }
+                    else if (Model.CurrentSort == "title_desc")
+                    {
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down" viewBox="0 0 16 16">
+                            <path d="M3.204 5h9.592L8 10.481zm-.753.659 4.796 5.48a1 1 0 0 0 1.506 0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 0 0-.753 1.659" />
+                        </svg>
+                    }
+                </a>
+            </th>
+            <th class="col-2">
+                <a asp-controller="TheatricalPerformances" asp-action="Index" asp-route-rating="@Model.RatingId" asp-route-searchString="@Model.SearchString" asp-route-sortOrder="@Model.WatchDateSort">
+                    @Html.DisplayNameFor(model => model.TheatricalPerformances!.FirstOrDefault()!.WatchedDate)
+                    @if (Model.CurrentSort == "watched_asc")
+                    {
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-up" viewBox="0 0 16 16">
+                            <path d="M3.204 11h9.592L8 5.519zm-.753-.659 4.796-5.48a1 1 0 0 1 1.506 0l4.796 5.48c.566.647.106 1.659-.753 1.659H3.204a1 1 0 0 1-.753-1.659" />
+                        </svg>
+                    }
+                    else if (Model.CurrentSort == "watched_desc")
+                    {
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down" viewBox="0 0 16 16">
+                            <path d="M3.204 5h9.592L8 10.481zm-.753.659 4.796 5.48a1 1 0 0 0 1.506 0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 0 0-.753 1.659" />
+                        </svg>
+                    }
+                </a>
+            </th>
+            <th class="col-2">
+                <a asp-controller="TheatricalPerformances" asp-action="Index" asp-route-rating="@Model.RatingId" asp-route-searchString="@Model.SearchString" asp-route-sortOrder="@Model.RatingSort">
+                    @Html.DisplayNameFor(model => model.TheatricalPerformances!.FirstOrDefault()!.Rating)
+                    @if (Model.CurrentSort == "rating_asc")
+                    {
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-up" viewBox="0 0 16 16">
+                            <path d="M3.204 11h9.592L8 5.519zm-.753-.659 4.796-5.48a1 1 0 0 1 1.506 0l4.796 5.48c.566.647.106 1.659-.753 1.659H3.204a1 1 0 0 1-.753-1.659" />
+                        </svg>
+                    }
+                    else if (Model.CurrentSort == "rating_desc")
+                    {
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down" viewBox="0 0 16 16">
+                            <path d="M3.204 5h9.592L8 10.481zm-.753.659 4.796 5.48a1 1 0 0 0 1.506 0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 0 0-.753 1.659" />
+                        </svg>
+                    }
+                </a>
+            </th>
+            <th class="col-2"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.TheatricalPerformances!)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.WatchedDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Rating!.Name)
+                </td>
+                <td class="d-flex justify-content-end">
+                    <a button type="button" class="btn btn-outline-warning me-1" asp-action="Edit" asp-route-id="@item.Id">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
+                        </svg>
+                    </a>
+                    <a button type="button" class="btn btn-outline-danger" asp-action="Delete" asp-route-id="@item.Id">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                            <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
+                        </svg>
+                    </a>
+                </td>
+            </tr>
+        }
+        <tr>
+            <td colspan="4">
+                <a button type="button" class="btn btn-outline-success btn-add-row" asp-action="Create">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                        <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z" />
+                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                    </svg>
+                </a>
+            </td>
+        </tr>
+    </tbody>
+</table>
