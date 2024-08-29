@@ -1,0 +1,21 @@
+﻿@model Data.Models.Movie;
+
+<div class="text-white p-10">
+    <a asp-action="Index" class="px-4 py-2 bg-white text-black rounded-2xl font-bold border-2 border-white hover:bg-black hover:text-white transition-all duration-200 cursor-pointer">Back</a>
+    <div class="flex gap-4 mt-10">
+        <img asp-append-version="true" alt="@Model.Title cover image" src="@Model.ImageUrl" class="w-[400px] h-[600px] object-cover"/>
+        <div class="flex flex-col gap-4">
+            <h2 class="text-4xl font-bold">@Model.Title</h2>
+            <div class="text-2xl flex flex-col gap-2">
+                <p>Genre: <span class="font-bold">@Model.Genre</span></p>
+                <p>Release Date: <span class="font-bold">@Model.ReleaseDate</span></p>
+                <p>Price: <span class="font-bold">@Model.Price$</span></p>
+            </div>
+            <div class="flex flex-col gap-2">
+                <a asp-action="Edit" asp-route-id="@Model.Id" type="button" class="px-4 py-2 text-center rounded-2xl font-bold bg-white text-black hover:bg-black hover:text-white cursor-pointer transition-all duration-200">Edit</a>
+                <a asp-action="Delete" asp-route-id="@Model.Id" type="button" class="px-4 py-2 text-center rounded-2xl font-bold bg-red-600 hover:bg-red-400 cursor-pointer transition-all duration-200">Delete</a>
+            </div>
+        </div>
+    </div>
+    
+</div>
