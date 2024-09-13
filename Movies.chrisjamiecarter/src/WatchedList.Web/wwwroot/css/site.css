@@ -1,0 +1,74 @@
+*, *::after, *::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+  font-family: inherit;
+}
+
+html {
+  font-size: 62.5%;
+  scroll-behavior: smooth;
+  min-height: 100%;
+  position: relative;
+}
+
+@media only screen and (max-width: 75em) {
+  html {
+    font-size: 59%
+  }
+}
+
+@media only screen and (max-width: 56.25em) {
+  html {
+    font-size: 56%
+  }
+}
+
+@media only screen and (min-width: 112.5em) {
+  html {
+    font-size: 65%
+  }
+}
+
+body {
+  box-sizing: border-box;
+  font-size: 1.4rem;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+footer {
+  background-color: #0F0F0F;
+}
+
+a {
+  text-decoration: none;
+  color: inherit
+}
+
+footer .container a {
+  text-decoration: none;
+  color: inherit
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+}
+
+.btn-add-row {
+  width: 100%;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.header-logo {
+  width: 5rem;
+  height: 5rem;
+  overflow: hidden;
+  margin-right: 1.5rem;
+  border-radius: 50%;  
+}
