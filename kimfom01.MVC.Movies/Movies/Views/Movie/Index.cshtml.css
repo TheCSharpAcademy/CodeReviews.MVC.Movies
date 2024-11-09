@@ -1,9 +1,0 @@
-div[class^="card-frame"]{
-    position: relative;
-}
-
-.like-movie {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-}
